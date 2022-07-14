@@ -1,15 +1,16 @@
 import { useSelector } from 'react-redux';
 import { Col, Row, } from 'reactstrap';
-import CampsiteCard from "./CampsiteCard";
-import { selectAllCampsites } from './campsitesSlice';
+import TeamCard from "./TeamCard";
+import { selectAllTeams } from './TeamSlice';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 
-const CampsitesList = () => {
-    const campsites = useSelector(selectAllCampsites);
+const TeamList = () => {
+    const teams = useSelector(selectAllTeams);
+    
 
-    const isLoading = useSelector((state) => state.campsites.isLoading);
-    const errMsg = useSelector((state) => state.campsites.errMsg);
+    const isLoading = useSelector((state) => state.teams.isLoading);
+    const errMsg = useSelector((state) => state.teams.errMsg);
 
     if (isLoading) {
         return (
@@ -29,10 +30,10 @@ const CampsitesList = () => {
 
     return (
         <Row className='ms-auto'>
-            {campsites.map((campsite) => {
+            {teams.map((team) => {
                 return (
-                    <Col md='5' className='m-4' key={campsite.id}>
-                        <CampsiteCard campsite={campsite} />
+                    <Col md='5' className='m-4' key={team.id}>
+                        <TeamCard team={team} />
                     </Col>
                 );
             })}
@@ -40,4 +41,4 @@ const CampsitesList = () => {
     );
 };
 
-export default CampsitesList;
+export default TeamList;

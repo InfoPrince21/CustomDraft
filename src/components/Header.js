@@ -1,3 +1,4 @@
+import UserLoginForm from '../features/user/UserLoginForm';
 import { useState } from 'react';
 import { 
     Navbar, 
@@ -28,8 +29,13 @@ const Header = () => {
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className='nav-link' to='/directory'>
-                            <i className='fa fa-list fa-lg' /> Directory
+                        <NavLink className='nav-link' to='/team-directory'>
+                            <i className='fa fa-list fa-lg' /> Teams-Directory
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className='nav-link' to='/staff-directory'>
+                            <i className='fa fa-list fa-lg' /> Staff-Directory
                         </NavLink>
                     </NavItem>
                     <NavItem>
@@ -43,6 +49,7 @@ const Header = () => {
                         </NavLink>
                     </NavItem>
                 </Nav>
+                <UserLoginForm />
             </Collapse>
         </Navbar>
     );
