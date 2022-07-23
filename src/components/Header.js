@@ -15,10 +15,9 @@ const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
-        <Navbar dark color='primary' sticky='top' expand='md'>
+        <Navbar dark sticky='top' expand='md'>
             <NavbarBrand className='ms-5' href='/'>
-                <img src={NucampLogo} alt='nucamp logo' className='float-start' />
-                <h1 className='mt-1'>NuCamp</h1>
+                <h3 className='mt-1'>The Staff Draft</h3>
             </NavbarBrand>
             <NavbarToggler onClick={() => setMenuOpen(!menuOpen)}/>
             <Collapse isOpen={menuOpen} navbar>
@@ -29,23 +28,28 @@ const Header = () => {
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className='nav-link' to='/team-directory'>
-                            <i className='fa fa-list fa-lg' /> Teams-Directory
+                        <NavLink className='nav-link' to='/teams'>
+                            <i className='fa fa-columns' /> Teams
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className='nav-link' to='/staff-directory'>
-                            <i className='fa fa-list fa-lg' /> Staff-Directory
+                        <NavLink className='nav-link' to='/staff'>
+                            <i className='fa fa-users' /> Staff
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className='nav-link' to='/about'>
-                            <i className='fa fa-info fa-lg' /> About
+                        <NavLink className='nav-link' to='/draft'>
+                            <i className='fa fa-list-ol' /> Draft
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className='nav-link' to='/stats'>
+                            <i className='fa fa-info fa-lg' /> Stats
                         </NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink className='nav-link' to='/contact'>
-                            <i className='fa fa-address-card fa-lg' /> Contact
+                            <i className='fa fa-check-circle-o' /> Score Points
                         </NavLink>
                     </NavItem>
                 </Nav>

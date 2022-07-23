@@ -6,7 +6,8 @@ h1,
 h2,
 h3,
 .card-body > .card-title {
-    font-family: 'Lobster', cursive;
+    font-family: 'Vast Shadow', cursive;
+
 }
 
 .card-title {
@@ -48,8 +49,14 @@ h2 {
 }
 
 .navbar-dark {
-    background-color: #901cad;
-    background-image: linear-gradient(to right, #5637dd, #3046c5, #510e5a);
+    background-color: #3329a2;
+    background-image: linear-gradient(to right, #2f00ff, #342cd9, #0f0e0f00);
+    margin-bottom: 2rem;
+    min-height: 8rem;
+}
+
+.navbar-light {
+    background-color: #ffffff;
     margin-bottom: 2rem;
     min-height: 8rem;
 }

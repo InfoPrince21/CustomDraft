@@ -3,7 +3,31 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { baseUrl } from '../../app/shared/baseUrl';
 import { mapImageURL } from '../../utils/mapImageURL';
 
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
+const table = base('Staff');
 
+
+export const addStaff = createAsyncThunk(
+    'teams/addStaff',
+  async (staffMember, { dispatch }) => {
+      const response = await fetch(
+          (baseUrl + 'staff'),
+          {
+            method: 'POST',
+            body: JSON.stringify(staffMember),
+            headers: { 'Content-Type': 'application/json' }
+        }
+      );
+      if(!response.ok) {
+          return Promise.reject('Unable to fetch, status: ' + response.status);
+      }
+      const data = await response.json();
+    //   dispatch(setAddStaff(staffMember))
+        dispatch(fetchStaff())
+      
+  }
+);
 
 export const deleteStaff = createAsyncThunk(
     'staff/deleteStaff',
@@ -33,6 +57,30 @@ export const fetchStaff = createAsyncThunk(
     }
 );
 
+export const fetchAirTableStaff = createAsyncThunk(
+    'staff/fetchAirTableStaff',
+    async () => {
+        const records = await table.select({view: 'Grid view'}).firstPage()
+        // const data = await response.json();
+        // console.log(records)
+        return records;
+    }
+);
+
+
+
+
+// export const fetchAirTableStaff = async () => {
+        
+//     const records = await table.select().firstPage()
+//     // console.log(records);
+
+//     // const recordFields= records.find(record => record.fields.name === 'Prince' )
+//     // const recordFields= records.find(record => record.fields.id === 222 )
+//     console.log(records)
+// }
+
+
 const initialState = {
     staffArray: [],
     isLoading: true,
@@ -45,18 +93,45 @@ const staffSlice = createSlice({
     reducers: {
         removeStaff: (state, action) => {
             state.staffArray = state.staffArray.filter(staff => staff.id != parseInt(action.payload));
+        },
+        setAddStaff: (state, action) => {
+            state.staffArray = state.staffArray.push(action.payload);
         }
     },
     extraReducers: {
+        [fetchAirTableStaff.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [fetchAirTableStaff.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.errMsg = '';
+            state.staffArray = action.payload;
+        },
+        [fetchAirTableStaff.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.errMsg = action.error ? action.error.message : 'Fetch failed';
+        },
         [fetchStaff.pending]: (state) => {
             state.isLoading = true;
         },
         [fetchStaff.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
-            state.staffArray = mapImageURL(action.payload);
+            // state.staffArray = mapImageURL(action.payload);
         },
         [fetchStaff.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.errMsg = action.error ? action.error.message : 'Fetch failed';
+        },
+        [addStaff.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [addStaff.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.errMsg = '';
+            // state.staffArray = state.staffArray.push(action.payload);
+        },
+        [addStaff.rejected]: (state, action) => {
             state.isLoading = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         }
@@ -65,7 +140,7 @@ const staffSlice = createSlice({
 
 export const staffReducer = staffSlice.reducer;
 
-export const { removeStaff} = staffSlice.actions;
+export const { setAddStaff, removeStaff} = staffSlice.actions;
 
 export const selectAllStaff = (state) => {
     return state.staff.staffArray;

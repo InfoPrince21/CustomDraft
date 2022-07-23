@@ -2,6 +2,33 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { baseUrl } from '../../app/shared/baseUrl';
 import { mapImageURL } from '../../utils/mapImageURL';
 
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
+const table = base('Teams');
+
+
+export const addNewTeam = createAsyncThunk(
+    'teams/addNewTeam',
+  async (newTeam, { dispatch }) => {
+      const response = await fetch(
+          (baseUrl + 'teams'),
+          {
+            method: 'POST',
+            body: JSON.stringify(newTeam),
+            headers: { 'Content-Type': 'application/json' }
+        }
+      );
+      if(!response.ok) {
+          return Promise.reject('Unable to fetch, status: ' + response.status);
+      }
+      const data = await response.json();
+      dispatch(fetchTeams())
+      
+      
+  }
+);
+
+
 export const draftedPlayersList = createAsyncThunk(
     'teams/draftedPlayersList',
   async (staffData, { dispatch }) => {
@@ -179,6 +206,17 @@ export const fetchTeams = createAsyncThunk(
     }
 );
 
+export const fetchAirTableTeams = createAsyncThunk(
+    'staff/fetchAirTableTeams',
+    async () => {
+        const records = await table.select({view: 'Grid view'}).firstPage()
+        // const data = await response.json();
+        console.log(records)
+        return records;
+    }
+);
+
+
 export const fetchDraftedPlayers = createAsyncThunk(
     'teams/fetchDraftedPlayers',
     async () => {
@@ -294,9 +332,17 @@ const teamsSlice = createSlice({
         [fetchTeams.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
-            state.teamsArray = mapImageURL(action.payload);
+            // state.teamsArray = mapImageURL(action.payload);
         },
-        [fetchTeams.rejected]: (state, action) => {
+        [fetchAirTableTeams.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [fetchAirTableTeams.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.errMsg = '';
+            state.teamsArray = action.payload;
+        },
+        [fetchAirTableTeams.rejected]: (state, action) => {
             state.isLoading = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
@@ -406,6 +452,17 @@ const teamsSlice = createSlice({
             tempArray.map(team => state.dratedPlayers.push(team.id));
         },
         [fetchDraftedPlayers.rejected]: (state, action) => {
+            state.loadingDraft = false;
+            state.errMsg = action.error ? action.error.message : 'Fetch failed';
+        },
+        [addNewTeam.pending]: (state) => {
+            state.loadingDraft= true;
+        },
+        [addNewTeam.fulfilled]: (state, action) => {
+            state.loadingDraft = false;
+            state.errMsg = '';
+        },
+        [addNewTeam.rejected]: (state, action) => {
             state.loadingDraft = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },

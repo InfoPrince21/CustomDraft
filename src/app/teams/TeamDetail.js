@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 const TeamDetail = ( {team} ) => {
-    // const { id: linkId } = useParams();
+    // const { iDlink} = useParams();
     const { image, name, stats, id } = team;
     const team1 = useSelector(selectAllTeam1);
     const team2 = useSelector(selectAllTeam2);
     const team3 = useSelector(selectAllTeam3);
-    const listTeam1 = team1.map(player => <li>{player.name}</li>)
-    const listTeam2 = team2.map(player => <li>{player.name}</li>)
-    const listTeam3 = team3.map(player => <li>{player.name}</li>)
+    const listTeam1 = team1.map(player => <Link to={`${player.id}`}><li>{player.name}</li></Link>)
+    const listTeam2 = team2.map(player => <Link to={`${player.id}`}><li>{player.name}</li></Link>)
+    const listTeam3 = team3.map(player => <Link to={`${player.id}`}><li>{player.name}</li></Link>)
     let teamPlayers
 
     if (id === 1) {
@@ -31,7 +31,7 @@ const TeamDetail = ( {team} ) => {
                     <CardText>{stats.description}</CardText>
                     <CardText>Team: {id}</CardText>
                     <CardText>Team Members:</CardText>
-                    <Link to={`${id}`}>{teamPlayers}</Link>
+                    {teamPlayers}
                 </CardBody>
             </Card>
         </Col>

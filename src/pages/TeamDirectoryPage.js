@@ -2,13 +2,13 @@ import { Container } from 'reactstrap';
 import TeamList from '../app/teams/TeamList';
 import SubHeader from '../components/SubHeader';
 
-const StaffDirectoryPage = () => {
+const TeamDirectoryPage = () => {
     return (
         <Container>
-            <SubHeader current='Team-Directory' />
+            <SubHeader current='Teams' />
             <TeamList />
         </Container>
     );
 };
 
-export default StaffDirectoryPage;
+export default TeamDirectoryPage;

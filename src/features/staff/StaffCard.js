@@ -1,4 +1,10 @@
+import Avatar from '@mui/material/Avatar';
 import { Card, CardHeader, CardImg, CardImgOverlay, CardTitle, Row, Button, Col } from 'reactstrap';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
 import { deleteStaff } from './staffSlice';
 import { useDispatch, useSelector, } from 'react-redux';
@@ -8,16 +14,29 @@ import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 import { findByLabelText } from '@testing-library/react';
 
-const StaffCard = ({staff}) => {  
+const StaffCard = ({staff, teamName, setTeamName,}, stop) => {  
+    
+    const [expanded, setExpanded] = useState(false);
+
+    const handleChange = (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+
     const dispatch = useDispatch();
-    const { id, image, name, stats, featured } = staff;
+    const { id, image, name, stats, quote, featured } = staff;
     const isLoading = useSelector((state) => state.teams.loadingDraft)
     const errMsg = useSelector((state) => state.teams.errMsg);
     // const [buttonDisplay, setButtonDisplay] = useState({display: "flex", gap: "4px"});
     const playerOnTeam = useSelector((state) => state.teams.playerDrafted)
     const playersGone = useSelector(selectAllDrafted)
     let buttonDisplay
+    let showButton1
+    let showButton2
+    let showButton3
+    let checkDisable = false
+
     const draftedPlayersArray = []
+    const panelId = 'panel' + id
     // playersGone.map(player => draftedPlayersArray.push(player.id))
     
     // if (playersGone.includes(id)) {
@@ -29,13 +48,30 @@ const StaffCard = ({staff}) => {
 
     if (playersGone.includes(id)) {
         buttonDisplay = {display: "none"}
-        console.log("has id")
+        checkDisable = true
+        // console.log("has id")
     } else {
         buttonDisplay = {display: "flex", gap: "4px"}
+        checkDisable = false
+    }
+
+    if (teamName === "Team 1") {
+        showButton1 = {display: "flex"}
+        showButton2 = {display: "none"}
+        showButton3 = {display: "none"}
+    } else if (teamName === "Team 2") {
+        showButton1 = {display: "none"}
+        showButton2 = {display: "flex"}
+        showButton3 = {display: "none"}
+    } else if (teamName === "Team 3") {
+        showButton1 = {display: "none"}
+        showButton2 = {display: "none"}
+        showButton3 = {display: "flex"}
     }
 
 
-    console.log(playersGone)
+
+    // console.log(playersGone)
 
     // const testData = dispatch(selectAllTeams);
     // const isLoading = useSelector((state) => state.team.loadingDraft);
@@ -58,8 +94,11 @@ const StaffCard = ({staff}) => {
         
         // setDrafted({display: "none"})
 
+        setTeamName("Team 2")
         dispatch(draftTeam1(staffData));
         dispatch(draftedPlayersList(staffData));
+        // return stop
+        
     }
 
     const handleTeam2 = () => {
@@ -68,6 +107,7 @@ const StaffCard = ({staff}) => {
             "name": name,
             "stats": stats         
         };
+        setTeamName("Team 3")
         dispatch(draftTeam2(staffData));
         dispatch(draftedPlayersList(staffData));
     }
@@ -78,38 +118,62 @@ const StaffCard = ({staff}) => {
             "name": name,
             "stats": stats
         };
+        setTeamName("Team 1")
         dispatch(draftTeam3(staffData));
         dispatch(draftedPlayersList(staffData));
     }
     return (
         <>
-        {/* {isLoading ? <Loading /> : ""}
-        {errMsg ? <Error errMsg={errMsg} />: ""} */}
-        <Link to={`${id}`}>    
-            <Card>
-                <CardHeader>{name}</CardHeader>
-                {/* <CardImg 
-                    width='100%'
-                    src={image}
-                    alt={name}
-                /> */}
-                {/* <CardImgOverlay>
-                    <CardTitle>{name}</CardTitle>
-                </CardImgOverlay> */}
-            </Card>
-        </Link>
-        <Row>
+        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-header"
+                disabled={checkDisable}
+                
+            >
+                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                    {name}
+                </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Avatar style={buttonDisplay} sx={{ width: 75, height: 75 }} alt={name} src={image} />
+            <Typography style={buttonDisplay}>
+                {quote}
+            </Typography>
+            <Row>
             <Col 
                 id={id}
-                // style={{
-                //     display: "flex",
-                //     gap:"4px"
-                // }}
                 style={buttonDisplay}
             >
-                {/* <Button onClick={handleSubmit} color="primary" size ="sm">Delete</Button> */}
                 <Button
-                    // style={playerOnTeam ? {display: "none"} : {display: "flex"}}
+                    style={showButton1}
+                    onClick={handleTeam1} color="primary" size ="sm"
+                >
+                    Draft to Team 1
+                </Button>
+                <Button
+                    style={showButton2}
+                    onClick={handleTeam2} color="primary" size ="sm"
+                >
+                    Draft to Team 2
+                </Button>
+                <Button
+                    style={showButton3}
+                    onClick={handleTeam3} color="primary" size ="sm"
+                >   
+                    Draft to Team 3
+                </Button>
+            </Col>
+        </Row>
+        </AccordionDetails>
+            </Accordion>
+        {/* <Row>
+            <Col 
+                id={id}
+                style={buttonDisplay}
+            >
+                <Button
                     onClick={handleTeam1} color="primary" size ="sm"
                 >
                     Team 1 Draft
@@ -125,7 +189,7 @@ const StaffCard = ({staff}) => {
                     Team 3 Draft
                 </Button>
             </Col>
-        </Row>
+        </Row> */}
         
         </>
     );
