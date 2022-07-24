@@ -23,7 +23,7 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     };
 
     const dispatch = useDispatch();
-    const { id, image, name, stats, quote, featured } = staff;
+    // const { id, image, name, stats, quote, featured } = staff;
     const isLoading = useSelector((state) => state.teams.loadingDraft)
     const errMsg = useSelector((state) => state.teams.errMsg);
     // const [buttonDisplay, setButtonDisplay] = useState({display: "flex", gap: "4px"});
@@ -36,7 +36,7 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     let checkDisable = false
 
     const draftedPlayersArray = []
-    const panelId = 'panel' + id
+    const panelId = 'panel' + staff.fields.id
     // playersGone.map(player => draftedPlayersArray.push(player.id))
     
     // if (playersGone.includes(id)) {
@@ -46,7 +46,7 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     //     buttonDisplay = {display: "flex", gap: "4px"}
     // }
 
-    if (playersGone.includes(id)) {
+    if (playersGone.includes(staff.fields.id)) {
         buttonDisplay = {display: "none"}
         checkDisable = true
         // console.log("has id")
@@ -81,15 +81,13 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     // const [buttonStyle, setButtonStyle] = useState({})   
 
     const handleSubmit = () => {
-        dispatch(deleteStaff(id));
+        dispatch(deleteStaff(staff.fields.id));
     };
 
     const handleTeam1 = () => {
         // setButtonStyle({display: "none"})
         const staffData = {
-            "id": id,
-            "name": name,
-            "stats": stats
+            staff            
         };
         
         // setDrafted({display: "none"})
@@ -103,9 +101,9 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
 
     const handleTeam2 = () => {
         const staffData = {
-            "id": id,
-            "name": name,
-            "stats": stats         
+            "id": staff.fields.id,
+            "name": staff.fields.name
+                   
         };
         setTeamName("Team 3")
         dispatch(draftTeam2(staffData));
@@ -114,9 +112,9 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
 
     const handleTeam3 = () => {
         const staffData = {
-            "id": id,
-            "name": name,
-            "stats": stats
+            "id": staff.fields.id,
+            "name": staff.fields.name
+            
         };
         setTeamName("Team 1")
         dispatch(draftTeam3(staffData));
@@ -133,17 +131,17 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
                 
             >
                 <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                    {name}
+                    {staff.fields.name}
                 </Typography>
             </AccordionSummary>
             <AccordionDetails>
-            <Avatar style={buttonDisplay} sx={{ width: 75, height: 75 }} alt={name} src={image} />
+            <Avatar style={buttonDisplay} sx={{ width: 75, height: 75 }} alt={staff.fields.name} src={staff.fields.image[0].url} />
             <Typography style={buttonDisplay}>
-                {quote}
+                {staff.fields.quote}
             </Typography>
             <Row>
             <Col 
-                id={id}
+                id={staff.fields.id}
                 style={buttonDisplay}
             >
                 <Button

@@ -152,10 +152,10 @@ export const selectStaffById = (id) => (state) => {
 
 export const selectFeaturedStaff = (state) => {
     return {
-        featuredItem: state.staff.staffArray.find(
-            (staff) => staff.featured
-            ),
-        isLoading: state.staff.isLoading,
-        errMsg: state.staff.errMsg
+        featuredItem: state.staff.staffArray.find(staff => staff.fields.featured === "true"),
+        isLoading: state.teams.isLoading,
+        errMsg: state.teams.errMsg
     };
 };
+
+

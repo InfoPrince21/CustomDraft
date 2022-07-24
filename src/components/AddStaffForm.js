@@ -13,27 +13,40 @@ import { addStaff } from '../features/staff/staffSlice'
 import yup from "yup";
 import { baseUrl } from '../app/shared/baseUrl';
 
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
+const table = base('Staff');
+
+
 const AddStaffForm = ( ) => {
     const [avatarPreview, setAvatarPreview] = useState('/avatars/default.png');
-    const nanoid = customAlphabet('1234567890', 6);
+    const nanoid = customAlphabet('1234567890', 3);
         
     const [modalOpen, setModalOpen] = useState(false)
     
     const dispatch = useDispatch();
 
-    const handleSubmit = (values) => {
-        const newStaff = {    
-            id: parseInt(nanoid()),
-            name: values.name,
-            image: "images/pic04.jpg",
-            // image: "",
-            quote:"Draft Me!",
-            stats: {
-                attendance: parseInt(10),
-                knowledge: parseInt(10),
-                teamwork: parseInt(10)
+    const handleSubmit = async (values) => {
+        const createdRecord = await table.create([
+            {
+              "fields": {
+                "name": values.name,
+                "id": parseInt(nanoid()),
+                "image": values.photo1,
+                "featured": "false",
+                "quote": "Draft Me!",
+                "featureInfo": "#1 Ranked Staff"
+              }
             }
-        };
+          ], function(err, records) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            records.forEach(function (record) {
+              console.log(record.getId());
+            });
+          });
 
         // const data = values.photo1
 
@@ -49,7 +62,7 @@ const AddStaffForm = ( ) => {
 
         console.log(values);
         setModalOpen(false)
-        dispatch(addStaff(newStaff));
+        // dispatch(addStaff(newStaff));
     };
 
     return (

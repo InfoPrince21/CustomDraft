@@ -4,17 +4,43 @@ import PartnersList from '../features/partners/PartnersList';
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
-const table = base('Teams');
+const table = base('Staff');
 
 const StatsPage = () => {
     const handleClick = async () => {
         
-        const records = await table.select().firstPage()
+        // const records = await table.select().firstPage()
+        const createdRecord = await table.create([
+            {
+              "fields": {
+                "name": "Rod",
+                "id": 111,
+                "image": [
+                  {
+                    "url": "https://dl.airtable.com/.attachments/ba9bb2a1803b30e10baa937874c2e4e2/62cd5643/pic01.jpg?ts=1658635904&userId=usrGX8D87u4bZmQFg&cs=60dde6320a23133b"
+                  }
+                ],
+                "featured": "Boss",
+                "quote": "Draft Me!",
+                "featureInfo": "#1 Ranked Staff"
+              }
+            }
+          ], function(err, records) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            records.forEach(function (record) {
+              console.log(record.getId());
+            });
+          });
         // console.log(records);
 
         // const recordFields= records.find(record => record.fields.name === 'Prince' )
-        const recordFields= records.map(record => record.fields.image[0].url)
-        console.log(recordFields)
+        // const recordFields= records.map(record => record.fields.image[0].url)
+        // const recordFields= records.find(record => record.fields.featured === "true")
+        // console.log(recordFields)
+        console.log(createdRecord)
     }
     
 

@@ -7,6 +7,7 @@ var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5')
 const table = base('Teams');
 
 
+
 export const addNewTeam = createAsyncThunk(
     'teams/addNewTeam',
   async (newTeam, { dispatch }) => {
@@ -69,6 +70,18 @@ export const draftTeam1 = createAsyncThunk(
       
       
   }
+);
+
+export const draftTeam1AirTable = createAsyncThunk(
+    'teams/draftTeam1AirTable',
+    async (staff) => {
+        const records = await table.update([{
+
+        }])
+        // const data = await response.json();
+        console.log(records)
+        return records;
+    }
 );
 
 export const draftTeam2 = createAsyncThunk(
@@ -513,9 +526,7 @@ export const removeDraftTeam1ById = (id) => (state) => {
 
 export const selectFeaturedTeam= (state) => {
     return {
-        featuredItem: state.teams.teamsArray.find(
-            (team) => team.featured
-            ),
+        featuredItem: state.teams.teamsArray.find(team => team.fields.featured === "true"),
         isLoading: state.teams.isLoading,
         errMsg: state.teams.errMsg
     };

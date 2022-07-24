@@ -26,16 +26,16 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchCampsites());
-        dispatch(fetchPartners());
-        dispatch(fetchPromotions());
-        dispatch(fetchComments());
-        dispatch(fetchStaff());
-        dispatch(fetchTeams());
-        dispatch(fetchTeam1());
-        dispatch(fetchTeam2());
-        dispatch(fetchTeam3());
-        dispatch(fetchDraftedPlayers());
+        // dispatch(fetchCampsites());
+        // dispatch(fetchPartners());
+        // dispatch(fetchPromotions());
+        // dispatch(fetchComments());
+        // dispatch(fetchStaff());
+        // dispatch(fetchTeams());
+        // dispatch(fetchTeam1());
+        // dispatch(fetchTeam2());
+        // dispatch(fetchTeam3());
+        // dispatch(fetchDraftedPlayers());
         dispatch(fetchAirTableStaff());
         dispatch(fetchAirTableTeams());
      }, [dispatch]);
@@ -45,8 +45,6 @@ function App() {
             <Header />
             <Routes>
                 <Route path='/' element={<HomePage />} />
-                <Route path='contact' element={<ContactPage />} />
-                <Route path='directory' element={<CampsitesDirectoryPage />} />
                 <Route path='draft' element={<DraftPage />} />
                 <Route path='staff' element={<StaffPage />} />
                 <Route path='teams' element={<TeamDirectoryPage />} />
