@@ -8,11 +8,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
 import { deleteStaff } from './staffSlice';
 import { useDispatch, useSelector, } from 'react-redux';
-import { draftedPlayersList, selectAllDrafted, selectAllTeam1, selectAllTeams, undoTeam1, draftTeam1, draftTeam2, draftTeam3, fetchTeam1, fetchTeam2, fetchTeam3} from '../../app/teams/TeamSlice';
+import {fetchTeam1Air, fetchTeam2Air, fetchTeam3Air, draftRecapList, draftTeam1AirTable, draftTeam2AirTable, draftTeam3AirTable, draftedPlayersList, selectAllDrafted, selectAllTeam1, selectAllTeams, undoTeam1, draftTeam1, draftTeam2, draftTeam3, fetchTeam1, fetchTeam2, fetchTeam3} from '../../app/teams/TeamSlice';
 import { useEffect, useState, } from 'react';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 import { findByLabelText } from '@testing-library/react';
+
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
+const team1draft = base('DraftTeam1');
+const team2draft = base('DraftTeam2');
+const team3draft = base('DraftTeam3');
+
+
 
 const StaffCard = ({staff, teamName, setTeamName,}, stop) => {  
     
@@ -86,39 +94,32 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
 
     const handleTeam1 = () => {
         // setButtonStyle({display: "none"})
-        const staffData = {
-            staff            
-        };
+        const staffData = staff 
         
         // setDrafted({display: "none"})
 
         setTeamName("Team 2")
-        dispatch(draftTeam1(staffData));
-        dispatch(draftedPlayersList(staffData));
+        dispatch(draftTeam1AirTable(staffData));
+        dispatch(draftRecapList(staffData));
+        dispatch(fetchTeam1Air());
         // return stop
         
     }
 
     const handleTeam2 = () => {
-        const staffData = {
-            "id": staff.fields.id,
-            "name": staff.fields.name
-                   
-        };
+        const staffData = staff 
         setTeamName("Team 3")
-        dispatch(draftTeam2(staffData));
-        dispatch(draftedPlayersList(staffData));
+        dispatch(draftTeam2AirTable(staffData));
+        dispatch(draftRecapList(staffData));
+        dispatch(fetchTeam2Air());
     }
 
     const handleTeam3 = () => {
-        const staffData = {
-            "id": staff.fields.id,
-            "name": staff.fields.name
-            
-        };
+        const staffData = staff 
         setTeamName("Team 1")
-        dispatch(draftTeam3(staffData));
-        dispatch(draftedPlayersList(staffData));
+        dispatch(draftTeam3AirTable(staffData));
+        dispatch(draftRecapList(staffData));
+        dispatch(fetchTeam3Air());
     }
     return (
         <>

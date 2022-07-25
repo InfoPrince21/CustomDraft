@@ -5,6 +5,10 @@ import { mapImageURL } from '../../utils/mapImageURL';
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
 const table = base('Teams');
+const team1draft = base('DraftTeam1');
+const team2draft = base('DraftTeam2');
+const team3draft = base('DraftTeam3');
+const draftRecap = base('DraftRecap');
 
 
 
@@ -68,18 +72,106 @@ export const draftTeam1 = createAsyncThunk(
       const data = await response.json();
       dispatch(setDraftTeam1(data))
       
-      
   }
+);
+
+export const draftRecapList = createAsyncThunk(
+    'teams/draftRecapList',
+    async (staffData) => {
+        const records = await draftRecap.create([
+            {
+              "fields": {
+                "name": staffData.fields.name,
+                "id": parseInt(staffData.fields.id)
+              }
+            }
+          ], function(err, records) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            records.forEach(function (record) {
+              console.log(record.getId());
+            });
+          });
+        // const data = await response.json();
+        // console.log(records)
+        return records;
+    }
 );
 
 export const draftTeam1AirTable = createAsyncThunk(
     'teams/draftTeam1AirTable',
-    async (staff) => {
-        const records = await table.update([{
-
-        }])
+    async (staffData, {dispatch}) => {
+        const records = await team1draft.create([
+            {
+              "fields": {
+                "name": staffData.fields.name,
+                "id": parseInt(staffData.fields.id)
+              }
+            }
+          ], function(err, records) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            records.forEach(function (record) {
+              console.log(record.getId());
+            });
+          });
         // const data = await response.json();
-        console.log(records)
+        // console.log(records)
+        // dispatch(fetchTeam1Air());
+        return records;
+    }
+);
+
+export const draftTeam3AirTable = createAsyncThunk(
+    'teams/draftTeam3AirTable',
+    async (staffData) => {
+        const records = await team3draft.create([
+            {
+              "fields": {
+                "name": staffData.fields.name,
+                "id": parseInt(staffData.fields.id)
+              }
+            }
+          ], function(err, records) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            records.forEach(function (record) {
+              console.log(record.getId());
+            });
+          });
+        // const data = await response.json();
+        // console.log(records)
+        return records;
+    }
+);
+
+export const draftTeam2AirTable = createAsyncThunk(
+    'teams/draftTeam2AirTable',
+    async (staffData) => {
+        const records = await team2draft.create([
+            {
+              "fields": {
+                "name": staffData.fields.name,
+                "id": parseInt(staffData.fields.id)
+              }
+            }
+          ], function(err, records) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            records.forEach(function (record) {
+              console.log(record.getId());
+            });
+          });
+        // const data = await response.json();
+        // console.log(records)
         return records;
     }
 );
@@ -140,68 +232,60 @@ export const deleteTeams = createAsyncThunk(
 
 export const undoDraftedTeams = createAsyncThunk(
     'teams/undoDraftedTeams',
-  async (id, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'DraftedPlayers/' + id),
-          {
-              method: 'DELETE'
-          }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
-      dispatch(undoLastDraftedTeams(id));
+    async (id, { dispatch }) => {
+        const records = await draftRecap.destroy([id], function(err, deletedRecords) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            console.log('Deleted', deletedRecords.length, 'records');
+          });
+    //   dispatch(undoLastDraftedTeams(id));
       
   }
 );
 
 
 export const undoTeam1 = createAsyncThunk(
-    'teams/undoTeam',
+    'teams/undoTeam1',
   async (id, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'Draft-Team1/' + id),
-          {
-              method: 'DELETE'
-          }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
+    const records = await team1draft.destroy([id], function(err, deletedRecords) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('Deleted', deletedRecords.length, 'records');
+      });
       dispatch(undoDraftTeam1(id));
       
   }
 );
 
 export const undoTeam2 = createAsyncThunk(
-    'teams/undoTeam',
+    'teams/undoTeam2',
   async (id, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'Draft-Team2/' + id),
-          {
-              method: 'DELETE'
-          }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
+    const records = await team2draft.destroy([id], function(err, deletedRecords) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('Deleted', deletedRecords.length, 'records');
+      });
       dispatch(undoDraftTeam2(id));
       
   }
 );
 
 export const undoTeam3 = createAsyncThunk(
-    'teams/undoTeam',
+    'teams/undoTeam3',
   async (id, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'Draft-Team3/' + id),
-          {
-              method: 'DELETE'
-          }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
+    const records = await team3draft.destroy([id], function(err, deletedRecords) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('Deleted', deletedRecords.length, 'records');
+      });
       dispatch(undoDraftTeam3(id));
       
   }
@@ -256,6 +340,36 @@ export const fetchTeam1 = createAsyncThunk(
     }
 );
 
+export const fetchTeam1Air = createAsyncThunk(
+    'teams/fetchTeam1Air',
+    async () => {
+        const records = await team1draft.select({view: 'Grid view'}).firstPage()
+        // const data = await response.json();
+        console.log(records)
+        return records;
+    }
+);
+
+export const fetchTeam2Air = createAsyncThunk(
+    'teams/fetchTeam2Air',
+    async () => {
+        const records = await team2draft.select({view: 'Grid view'}).firstPage()
+        // const data = await response.json();
+        console.log(records)
+        return records;
+    }
+);
+
+export const fetchTeam3Air = createAsyncThunk(
+    'teams/fetchTeam3Air',
+    async () => {
+        const records = await team3draft.select({view: 'Grid view'}).firstPage()
+        // const data = await response.json();
+        console.log(records)
+        return records;
+    }
+);
+
 export const fetchTeam2 = createAsyncThunk(
     'teams/fetchTeam2',
     async () => {
@@ -302,20 +416,20 @@ const teamsSlice = createSlice({
             state.teamsArray = state.teamsArray.filter(team => team.id != parseInt(action.payload));
         },
         undoDraftTeam1: (state, action) => {
-            state.draftTeam1Array = state.draftTeam1Array.filter(team => team.id != parseInt(action.payload));
+            state.draftTeam1Array = state.draftTeam1Array.filter(team => team.id != action.payload);
             state.playerDrafted = false;
             // state.dratedPlayers = state.dratedPlayers.filter(team => team != parseInt(action.payload));
         },
         undoDraftTeam2: (state, action) => {
-            state.draftTeam2Array = state.draftTeam2Array.filter(team => team.id != parseInt(action.payload));
+            state.draftTeam2Array = state.draftTeam2Array.filter(team => team.id != action.payload);
             // state.dratedPlayers = state.dratedPlayers.filter(team => team != parseInt(action.payload));
         },
         undoDraftTeam3: (state, action) => {
-            state.draftTeam3Array = state.draftTeam3Array.filter(team => team.id != parseInt(action.payload));
+            state.draftTeam3Array = state.draftTeam3Array.filter(team => team.id != action.payload);
             // state.dratedPlayers = state.dratedPlayers.filter(team => team != parseInt(action.payload));
         },
         undoLastDraftedTeams: (state, action) => {
-            state.dratedPlayers = state.dratedPlayers.filter(team => team != parseInt(action.payload));
+            state.dratedPlayers = state.dratedPlayers.filter(team => team != action.payload);
         },
         setDraftTeam1: (state, action,) => {
             state.draftTeam1Array.push(action.payload)
@@ -359,51 +473,52 @@ const teamsSlice = createSlice({
             state.isLoading = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
-        [fetchTeam1.pending]: (state) => {
+        [fetchTeam1Air.pending]: (state) => {
             state.isLoading = true;
         },
-        [fetchTeam1.fulfilled]: (state, action) => {
+        [fetchTeam1Air.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
             state.draftTeam1Array = (action.payload);
         },
-        [fetchTeam1.rejected]: (state, action) => {
+        [fetchTeam1Air.rejected]: (state, action) => {
             state.isLoading = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
-        [fetchTeam2.pending]: (state) => {
+        [fetchTeam2Air.pending]: (state) => {
             state.isLoading = true;
         },
-        [fetchTeam2.fulfilled]: (state, action) => {
+        [fetchTeam2Air.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
             state.draftTeam2Array = (action.payload);
         },
-        [fetchTeam2.rejected]: (state, action) => {
+        [fetchTeam2Air.rejected]: (state, action) => {
             state.isLoading = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
-        [fetchTeam3.pending]: (state) => {
+        [fetchTeam3Air.pending]: (state) => {
             state.isLoading = true;
         },
-        [fetchTeam3.fulfilled]: (state, action) => {
+        [fetchTeam3Air.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
             state.draftTeam3Array = (action.payload);
         },
-        [fetchTeam3.rejected]: (state, action) => {
+        [fetchTeam3Air.rejected]: (state, action) => {
             state.isLoading = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
-        [draftTeam1.pending]: (state) => {
-            state.loadingDraft= true;
+        [draftTeam1AirTable.pending]: (state) => {
+            // state.loadingDraft= true;
         },
-        [draftTeam1.fulfilled]: (state, action) => {
+        [draftTeam1AirTable.fulfilled]: (state, action) => {
             state.loadingDraft = false;
             state.errMsg = '';
             // state.teamsArray = mapImageURL(action.payload);
+            state.dratedPlayers.push(action.payload.id);
         },
-        [draftTeam1.rejected]: (state, action) => {
+        [draftTeam1AirTable.rejected]: (state, action) => {
             state.loadingDraft = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },

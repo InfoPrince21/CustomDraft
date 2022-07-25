@@ -81,7 +81,7 @@ const StaffList = () => {
     const handleUndo1 = (event) => {
       const {id} = event.target
       dispatch(undoTeam1(id));
-      dispatch(undoDraftedTeams(id));
+      // dispatch(undoDraftedTeams(id));
       // setButtonStyle({})
       console.log(teams)
     }
@@ -169,7 +169,7 @@ const StaffList = () => {
                       {teams.map((team) => {
                           return (
                             <>
-                            <li>{team.name}
+                            <li>{team.fields.name}
                             <Button
                               id={team.id}
                               onClick={handleUndo1}
@@ -193,7 +193,7 @@ const StaffList = () => {
                       {teams2.map((team) => {
                           return (
                             <>
-                            <li>{team.name}
+                            <li>{team.fields.name}
                             <Button
                               id={team.id}
                               onClick={handleUndo2}
@@ -217,7 +217,7 @@ const StaffList = () => {
                       {teams3.map((team) => {
                           return (
                             <>
-                            <li>{team.name}
+                            <li>{team.fields.name}
                             <Button
                               id={team.id}
                               onClick={handleUndo3}

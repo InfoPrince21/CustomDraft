@@ -32,7 +32,9 @@ const AddStaffForm = ( ) => {
               "fields": {
                 "name": values.name,
                 "id": parseInt(nanoid()),
-                "image": values.photo1,
+                "image": [{
+                    "url": "https://dl.airtable.com/.attachmentThumbnails/f115340ec561085e4744c11dbd3e69e1/bc515143"
+                }],
                 "featured": "false",
                 "quote": "Draft Me!",
                 "featureInfo": "#1 Ranked Staff"
