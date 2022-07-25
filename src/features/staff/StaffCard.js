@@ -6,7 +6,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
-import { deleteStaff } from './staffSlice';
 import { useDispatch, useSelector, } from 'react-redux';
 import {fetchTeam1Air, fetchTeam2Air, fetchTeam3Air, draftRecapList, draftTeam1AirTable, draftTeam2AirTable, draftTeam3AirTable, draftedPlayersList, selectAllDrafted, selectAllTeam1, selectAllTeams, undoTeam1, draftTeam1, draftTeam2, draftTeam3, fetchTeam1, fetchTeam2, fetchTeam3} from '../../app/teams/TeamSlice';
 import { useEffect, useState, } from 'react';
@@ -89,7 +88,7 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     // const [buttonStyle, setButtonStyle] = useState({})   
 
     const handleSubmit = () => {
-        dispatch(deleteStaff(staff.fields.id));
+        // dispatch(deleteStaff(staff.fields.id));
     };
 
     const handleTeam1 = () => {
@@ -99,8 +98,8 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
         // setDrafted({display: "none"})
 
         setTeamName("Team 2")
-        dispatch(draftTeam1AirTable(staffData));
         dispatch(draftRecapList(staffData));
+        dispatch(draftTeam1AirTable(staffData));
         dispatch(fetchTeam1Air());
         // return stop
         
@@ -109,16 +108,16 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     const handleTeam2 = () => {
         const staffData = staff 
         setTeamName("Team 3")
-        dispatch(draftTeam2AirTable(staffData));
         dispatch(draftRecapList(staffData));
+        dispatch(draftTeam2AirTable(staffData));
         dispatch(fetchTeam2Air());
     }
 
     const handleTeam3 = () => {
         const staffData = staff 
         setTeamName("Team 1")
-        dispatch(draftTeam3AirTable(staffData));
         dispatch(draftRecapList(staffData));
+        dispatch(draftTeam3AirTable(staffData));
         dispatch(fetchTeam3Air());
     }
     return (

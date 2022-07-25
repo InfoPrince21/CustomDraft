@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Row, Button, Col, Container, Card, CardHeader, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
-import { deleteStaff } from '../../features/staff/staffSlice';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -38,10 +37,11 @@ const StaffDirectory = ({staff}) => {
     }
     
     const deletePerson = () => {
-        dispatch(deleteStaff(staff.fields.id))
+        // dispatch(deleteStaff(staff.fields.id))
     }
 
     return (
+        <Link to={`${staff.fields.id}`}>
         <Col md='2' className='m-5' key={staff.fields.id}>
             <ImageList sx={{ width: 400, height: 250 }}>
                     <ImageListItem key={staff.fields.id}>
@@ -59,6 +59,7 @@ const StaffDirectory = ({staff}) => {
                     </ImageListItem>
             </ImageList>
         </Col>
+        </Link>
   )
 }
 

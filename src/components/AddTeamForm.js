@@ -8,7 +8,7 @@ import { Button, Modal, ModalHeader, ModalBody, FormGroup, Label } from 'reactst
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { validateCommentForm }  from '../utils/validateCommentForm';
 import { postComment } from '../features/comments/commentsSlice';
-import { addNewTeam } from '../app/teams/TeamSlice'
+// import { addNewTeam } from '../app/teams/TeamSlice'
 
 const AddTeamForm = ( ) => {
     
@@ -30,7 +30,7 @@ const AddTeamForm = ( ) => {
         };
         // console.log(newStaff);
         setModalOpen(false)
-        dispatch(addNewTeam(newTeam));
+        // dispatch(addNewTeam(newTeam));
     };
 
     return (

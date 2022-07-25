@@ -17,7 +17,7 @@ import { fetchPartners } from './features/partners/partnersSlice';
 import { fetchPromotions } from './features/promotions/promotionsSlice';
 import { fetchComments } from './features/comments/commentsSlice';
 import { fetchAirTableStaff, fetchStaff } from './features/staff/staffSlice';
-import { fetchDraftedPlayers, fetchTeams ,fetchTeam1Air,fetchTeam2Air,fetchTeam3Air, draftTeam1, draftTeam2, draftTeam3, fetchAirTableTeams } from './app/teams/TeamSlice';
+import { fetchDraftRecap, fetchTeams ,fetchTeam1Air,fetchTeam2Air,fetchTeam3Air, draftTeam1, draftTeam2, draftTeam3, fetchAirTableTeams } from './app/teams/TeamSlice';
 import { draftedTeams } from './app/teams/TeamSlice';
 import DratedTeams from './app/teams/DratedTeamsList';
 import './App.css';
@@ -26,16 +26,10 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // dispatch(fetchCampsites());
-        // dispatch(fetchPartners());
-        // dispatch(fetchPromotions());
-        // dispatch(fetchComments());
-        // dispatch(fetchStaff());
-        // dispatch(fetchTeams());
         dispatch(fetchTeam1Air());
         dispatch(fetchTeam2Air());
         dispatch(fetchTeam3Air());
-        // dispatch(fetchDraftedPlayers());
+        dispatch(fetchDraftRecap());
         dispatch(fetchAirTableStaff());
         dispatch(fetchAirTableTeams());
      }, [dispatch]);
@@ -48,10 +42,10 @@ function App() {
                 <Route path='draft' element={<DraftPage />} />
                 <Route path='staff' element={<StaffPage />} />
                 <Route path='teams' element={<TeamDirectoryPage />} />
-                <Route
+                {/* <Route
                     path='draft/:staffId'
                     element={<StaffDetailPage />}
-                />
+                /> */}
                 <Route
                     path='staff/:staffId'
                     element={<StaffDetailPage />}

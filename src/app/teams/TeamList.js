@@ -8,8 +8,6 @@ import AddTeamForm from '../../components/AddTeamForm';
 
 const TeamList = () => {
     const teams = useSelector(selectAllTeams);
-    
-
     const isLoading = useSelector((state) => state.teams.isLoading);
     const errMsg = useSelector((state) => state.teams.errMsg);
 

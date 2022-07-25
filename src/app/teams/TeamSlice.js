@@ -10,71 +10,6 @@ const team2draft = base('DraftTeam2');
 const team3draft = base('DraftTeam3');
 const draftRecap = base('DraftRecap');
 
-
-
-export const addNewTeam = createAsyncThunk(
-    'teams/addNewTeam',
-  async (newTeam, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'teams'),
-          {
-            method: 'POST',
-            body: JSON.stringify(newTeam),
-            headers: { 'Content-Type': 'application/json' }
-        }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
-      const data = await response.json();
-      dispatch(fetchTeams())
-      
-      
-  }
-);
-
-
-export const draftedPlayersList = createAsyncThunk(
-    'teams/draftedPlayersList',
-  async (staffData, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'DraftedPlayers'),
-          {
-            method: 'POST',
-            body: JSON.stringify(staffData),
-            headers: { 'Content-Type': 'application/json' }
-        }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
-      const data = await response.json();
-    //   dispatch(setDraftTeam1(data))
-      
-      
-  }
-);
-
-export const draftTeam1 = createAsyncThunk(
-    'teams/draftTeam1',
-  async (staffData, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'Draft-Team1'),
-          {
-            method: 'POST',
-            body: JSON.stringify(staffData),
-            headers: { 'Content-Type': 'application/json' }
-        }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
-      const data = await response.json();
-      dispatch(setDraftTeam1(data))
-      
-  }
-);
-
 export const draftRecapList = createAsyncThunk(
     'teams/draftRecapList',
     async (staffData) => {
@@ -176,59 +111,7 @@ export const draftTeam2AirTable = createAsyncThunk(
     }
 );
 
-export const draftTeam2 = createAsyncThunk(
-    'teams/draftTeam2',
-  async (staffData, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'Draft-Team2'),
-          {
-            method: 'POST',
-            body: JSON.stringify(staffData),
-            headers: { 'Content-Type': 'application/json' }
-        }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
-      const data = await response.json();
-      dispatch(setDraftTeam2(data))
-  }
-);
 
-export const draftTeam3 = createAsyncThunk(
-    'teams/draftTeam3',
-  async (staffData, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'Draft-Team3'),
-          {
-            method: 'POST',
-            body: JSON.stringify(staffData),
-            headers: { 'Content-Type': 'application/json' }
-        }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
-      const data = await response.json();
-      dispatch(setDraftTeam3(data))
-  }
-);
-
-export const deleteTeams = createAsyncThunk(
-    'teams/deleteTeam',
-  async (id, { dispatch }) => {
-      const response = await fetch(
-          (baseUrl + 'teams/' + id),
-          {
-              method: 'DELETE'
-          }
-      );
-      if(!response.ok) {
-          return Promise.reject('Unable to fetch, status: ' + response.status);
-      }
-      dispatch(removeTeam(id));
-  }
-);
 
 export const undoDraftedTeams = createAsyncThunk(
     'teams/undoDraftedTeams',
@@ -291,52 +174,24 @@ export const undoTeam3 = createAsyncThunk(
   }
 );
 
-export const fetchTeams = createAsyncThunk(
-    'teams/fetchTeams',
+export const fetchDraftRecap= createAsyncThunk(
+    'staff/fetchDraftRecap',
     async () => {
-        const response = await fetch(baseUrl + 'teams');
-        if (!response.ok) {
-            return Promise.reject('Unable to fetch, status: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
+        const records = await draftRecap.select({view: 'Grid view'}).firstPage()
+        // const data = await response.json();
+        // console.log(records)
+        return records;
     }
 );
+
 
 export const fetchAirTableTeams = createAsyncThunk(
     'staff/fetchAirTableTeams',
     async () => {
         const records = await table.select({view: 'Grid view'}).firstPage()
         // const data = await response.json();
-        console.log(records)
+        // console.log(records)
         return records;
-    }
-);
-
-
-export const fetchDraftedPlayers = createAsyncThunk(
-    'teams/fetchDraftedPlayers',
-    async () => {
-        const response = await fetch(baseUrl + 'DraftedPlayers');
-        if (!response.ok) {
-            return Promise.reject('Unable to fetch, status: ' + response.status);
-        }
-        const data = await response.json();
-        // dispatch(setDraftedPlayers(data));
-        return data;
-    }
-);
-
-export const fetchTeam1 = createAsyncThunk(
-    'teams/fetchTeam1',
-    async () => {
-        const response = await fetch(baseUrl + 'Draft-Team1');
-        if (!response.ok) {
-            return Promise.reject('Unable to fetch, status: ' + response.status);
-        }
-        const data = await response.json();
-        
-        return data;
     }
 );
 
@@ -345,7 +200,7 @@ export const fetchTeam1Air = createAsyncThunk(
     async () => {
         const records = await team1draft.select({view: 'Grid view'}).firstPage()
         // const data = await response.json();
-        console.log(records)
+        // console.log(records)
         return records;
     }
 );
@@ -355,7 +210,7 @@ export const fetchTeam2Air = createAsyncThunk(
     async () => {
         const records = await team2draft.select({view: 'Grid view'}).firstPage()
         // const data = await response.json();
-        console.log(records)
+        // console.log(records)
         return records;
     }
 );
@@ -365,36 +220,13 @@ export const fetchTeam3Air = createAsyncThunk(
     async () => {
         const records = await team3draft.select({view: 'Grid view'}).firstPage()
         // const data = await response.json();
-        console.log(records)
+        // console.log(records)
         return records;
     }
 );
 
-export const fetchTeam2 = createAsyncThunk(
-    'teams/fetchTeam2',
-    async () => {
-        const response = await fetch(baseUrl + 'Draft-Team2');
-        if (!response.ok) {
-            return Promise.reject('Unable to fetch, status: ' + response.status);
-        }
-        const data = await response.json();
-        
-        return data;
-    }
-);
 
-export const fetchTeam3 = createAsyncThunk(
-    'teams/fetchTeam3',
-    async () => {
-        const response = await fetch(baseUrl + 'Draft-Team3');
-        if (!response.ok) {
-            return Promise.reject('Unable to fetch, status: ' + response.status);
-        }
-        const data = await response.json();
-        
-        return data;
-    }
-);
+
 
 const initialState = {
     teamsArray: [],
@@ -404,7 +236,7 @@ const initialState = {
     isLoading: true,
     loadingDraft: false,
     playerDrafted: false,
-    dratedPlayers: [],
+    draftedPlayers: [],
     errMsg: ''
 };
 
@@ -452,14 +284,23 @@ const teamsSlice = createSlice({
             
         },
     },
+
+    
+
     extraReducers: {
-        [fetchTeams.pending]: (state) => {
+        [fetchDraftRecap.pending]: (state) => {
             state.isLoading = true;
         },
-        [fetchTeams.fulfilled]: (state, action) => {
+        [fetchDraftRecap.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
-            // state.teamsArray = mapImageURL(action.payload);
+            const airTableRecords = action.payload
+            const newArray = airTableRecords.map(record => record.fields.id)
+            state.draftedPlayers = newArray;
+        },
+        [fetchDraftRecap.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
         [fetchAirTableTeams.pending]: (state) => {
             state.isLoading = true;
@@ -467,7 +308,9 @@ const teamsSlice = createSlice({
         [fetchAirTableTeams.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
-            state.teamsArray = action.payload;
+            const airTableRecords = action.payload
+            const newArray = airTableRecords.map(record => ({id: record.id, fields: record.fields}))
+            state.teamsArray = newArray;
         },
         [fetchAirTableTeams.rejected]: (state, action) => {
             state.isLoading = false;
@@ -479,7 +322,9 @@ const teamsSlice = createSlice({
         [fetchTeam1Air.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
-            state.draftTeam1Array = (action.payload);
+            const airTableRecords = action.payload
+            const newArray = airTableRecords.map(record => ({id: record.id, fields: record.fields}))
+            state.draftTeam1Array = newArray;
         },
         [fetchTeam1Air.rejected]: (state, action) => {
             state.isLoading = false;
@@ -491,7 +336,9 @@ const teamsSlice = createSlice({
         [fetchTeam2Air.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
-            state.draftTeam2Array = (action.payload);
+            const airTableRecords = action.payload
+            const newArray = airTableRecords.map(record => ({id: record.id, fields: record.fields}))
+            state.draftTeam2Array = newArray;
         },
         [fetchTeam2Air.rejected]: (state, action) => {
             state.isLoading = false;
@@ -503,7 +350,9 @@ const teamsSlice = createSlice({
         [fetchTeam3Air.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.errMsg = '';
-            state.draftTeam3Array = (action.payload);
+            const airTableRecords = action.payload
+            const newArray = airTableRecords.map(record => ({id: record.id, fields: record.fields}))
+            state.draftTeam3Array = newArray;
         },
         [fetchTeam3Air.rejected]: (state, action) => {
             state.isLoading = false;
@@ -522,30 +371,6 @@ const teamsSlice = createSlice({
             state.loadingDraft = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
-        [draftTeam2.pending]: (state) => {
-            state.loadingDraft= true;
-        },
-        [draftTeam2.fulfilled]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = '';
-            // state.teamsArray = mapImageURL(action.payload);
-        },
-        [draftTeam2.rejected]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = action.error ? action.error.message : 'Fetch failed';
-        },
-        [draftTeam3.pending]: (state) => {
-            state.loadingDraft= true;
-        },
-        [draftTeam3.fulfilled]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = '';
-            // state.teamsArray = mapImageURL(action.payload);
-        },
-        [draftTeam3.rejected]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = action.error ? action.error.message : 'Fetch failed';
-        },
         [undoTeam1.pending]: (state) => {
             state.loadingDraft= true;
         },
@@ -555,42 +380,6 @@ const teamsSlice = createSlice({
             // state.teamsArray = mapImageURL(action.payload);
         },
         [undoTeam1.rejected]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = action.error ? action.error.message : 'Fetch failed';
-        },
-        [draftedPlayersList.pending]: (state) => {
-            state.loadingDraft= true;
-        },
-        [draftedPlayersList.fulfilled]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = '';
-            state.dratedPlayers.push(action.payload.id);
-        },
-        [draftedPlayersList.rejected]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = action.error ? action.error.message : 'Fetch failed';
-        },
-        [fetchDraftedPlayers.pending]: (state) => {
-            state.loadingDraft= true;
-        },
-        [fetchDraftedPlayers.fulfilled]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = '';
-            const tempArray = action.payload
-            tempArray.map(team => state.dratedPlayers.push(team.id));
-        },
-        [fetchDraftedPlayers.rejected]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = action.error ? action.error.message : 'Fetch failed';
-        },
-        [addNewTeam.pending]: (state) => {
-            state.loadingDraft= true;
-        },
-        [addNewTeam.fulfilled]: (state, action) => {
-            state.loadingDraft = false;
-            state.errMsg = '';
-        },
-        [addNewTeam.rejected]: (state, action) => {
             state.loadingDraft = false;
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
@@ -611,7 +400,7 @@ export const selectAllTeams = (state) => {
 };
 
 export const selectAllDrafted = (state) => {
-    return state.teams.dratedPlayers;
+    return state.teams.draftedPlayers;
 };
 
 export const selectAllTeam1 = (state) => {
@@ -628,7 +417,7 @@ export const selectAllTeam3 = (state) => {
 };
 
 export const selectTeamById = (id) => (state) => {
-    return state.teams.teamsArray.find((team) => team.id === parseInt(id));
+    return state.teams.teamsArray.find((team) => team.fields.id === parseInt(id));
 };
 
 export const deleteTeamById = (id) => (state) => {

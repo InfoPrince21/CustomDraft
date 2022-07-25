@@ -57,7 +57,7 @@ const StaffPage = () => {
             <Row md='5' className='m-4'>
                 {getStaff.map((staff) => {
                     return (
-                        <StaffDirectory staff={staff} />
+                        <StaffDirectory key={staff.id} staff={staff} />
                     );
                 })}
             </Row>

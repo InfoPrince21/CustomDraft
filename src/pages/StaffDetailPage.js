@@ -11,7 +11,7 @@ import Loading from '../components/Loading';
 const StaffDetailPage = () => {
     const { staffId } = useParams();
     const staff = useSelector(selectStaffById(staffId));
-    console.log('staff:', staff);
+    // console.log('staff:', staff);
 
     const isLoading = useSelector((state) => state.staff.isLoading);
     const errMsg = useSelector((state) => state.staff.errMsg);
@@ -31,7 +31,7 @@ const StaffDetailPage = () => {
 
     return (
         <Container>
-            {staff && <SubHeader current={staff.name} staffDetail={true} />}
+            {staff && <SubHeader current={staff.fields.name} staffDetail={true} />}
             <Row>
                 {content}
             </Row>
