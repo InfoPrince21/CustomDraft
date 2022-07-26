@@ -8,16 +8,12 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 
-
-
 const StaffDirectory = ({staff}) => {
     
     const isLoading = useSelector((state) => state.staff.isLoading);
     const isDraftLoading = useSelector((state) => state.teams.loadingDraft);
     const errMsg = useSelector((state) => state.staff.errMsg);
     // const { id, image, name, stats, featured, quote } = staff;
-    
-    
     const dispatch = useDispatch();
 
     if (isLoading) {

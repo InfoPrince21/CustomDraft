@@ -1,25 +1,38 @@
-import { Card, CardImg, CardText, CardBody, Col } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, Col, Row } from 'reactstrap';
 import StatsCard from '../stats/StatsCard';
-import { fetchStatsByName } from '../stats/statsSlice';
+import { selectStats, selectStatsByName } from '../stats/statsSlice';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 const StaffDetail = ( {staff} ) => {
-    
-    
 
     const dispatch = useDispatch();
     const { fields } = staff;
-    // const staffStats = dispatch(fetchStatsByName(fields.name))
-    // const playerStats = staffStats
-    // const miniStats = playerStats.map(record => record)
-    // const mappedStats = playerStats.map(record => record.tools)
+    const getStats = useSelector(selectStats);
+    const staffStats = getStats.filter(stat => stat.fields.name === fields.name)
+    const playerStats = useSelector(selectStatsByName(fields.name));
+    
+    const attendanceStats = playerStats.map(stat => stat.fields.attendance)
+    const attendanceTotals = attendanceStats.reduce((partialSum, a) => partialSum + a, 0)
 
-    // const [theStats, setTheStats] = useEffect(staffStats)
-    // const attendanceStats = staffStats.map(stats => stats.fields.attendace)
+    const knowledgeStats= playerStats.map(stat => stat.fields.knowledge)
+    const knowledgeTotals = knowledgeStats.reduce((partialSum, a) => partialSum + a, 0)
+
+    const teamworkStats= playerStats.map(stat => stat.fields.teamwork)
+    const teamworkTotals = teamworkStats.reduce((partialSum, a) => partialSum + a, 0)
+
+    const toolsStats= playerStats.map(stat => stat.fields.tools)
+    const toolsTotals = toolsStats.reduce((partialSum, a) => partialSum + a, 0)
+
+    const salesStats= playerStats.map(stat => stat.fields.sales)
+    const salesTotals = salesStats.reduce((partialSum, a) => partialSum + a, 0)
+
+    // console.log(staffStats);
+
 
     return (
-        <Col md='5' className='m-1'>
+        <Row>
+        <Col>
             <Card>
                 <CardImg top src={fields.image[0].url} alt={fields.name} />
                 <CardBody>
@@ -27,11 +40,26 @@ const StaffDetail = ( {staff} ) => {
                     <ul>
                         <li>{fields.quote}</li>
                     </ul>
-                    
                     </CardText>
                 </CardBody>
             </Card>
         </Col>
+        <Col md='5' className='m-1 ms-auto'>
+        <h5>Stats Totals</h5>
+        <p>Attendance Score: {attendanceTotals} </p>
+        <p>Knowledge Score: {knowledgeTotals} </p>
+        <p>Teamwork Score: {teamworkTotals} </p>
+        <p>Tools Score: {toolsTotals} </p>
+        <p>Sales Score: {salesTotals} </p>
+        <p></p>
+        </Col>
+        <Col>
+        <h5>Stats Recap</h5>
+        {staffStats.map(stat => 
+                        <StatsCard stats={stat} />)
+                    }
+        </Col>
+        </Row>
     );
 };
 

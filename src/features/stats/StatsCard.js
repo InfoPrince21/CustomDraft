@@ -10,18 +10,13 @@ import { fetchStatsByName } from './statsSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 
-
-
-
 const StatsCard = ({stats}) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchStatsByName(stats.fields.name));
+    // useEffect(() => {
+    //     dispatch(fetchStatsByName(stats.fields.name));
     
-     }, [dispatch]);
-
-
+    //  }, [dispatch]);
 
     const bull = (
         <Box
@@ -36,10 +31,10 @@ const StatsCard = ({stats}) => {
         <React.Fragment>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              {stats.fields.id}
+            
             </Typography>
             <Typography variant="h5" component="div">
-                {stats.fields.name}
+            {stats.fields.day}
             </Typography>
             <br />
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
@@ -52,23 +47,21 @@ const StatsCard = ({stats}) => {
               Teamwork: {stats.fields.teamwork}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Tools: {stats.fields.Tools}
+              Tools: {stats.fields.tools}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               Sales: {stats.fields.sales}
             </Typography>
-            <br />
             <Typography variant="body2">
               Date: {stats.fields.date}
               <br />
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small">See More</Button>
+            {/* <Button size="small">See More</Button> */}
           </CardActions>
         </React.Fragment>
       );
-  
   
     return (
     <Box sx={{ minWidth: 275 }}>

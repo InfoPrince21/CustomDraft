@@ -2,14 +2,13 @@ import { Col, Row, Container, Card, CardBody, CardHeader, Button } from 'reactst
 import { useSelector, useDispatch } from 'react-redux';
 import SubHeader from '../components/SubHeader';
 import PartnersList from '../features/partners/PartnersList';
-import { selectStats } from '../features/stats/statsSlice';
+import { selectStats, selectStatsByName } from '../features/stats/statsSlice';
 import StatsCard from '../features/stats/StatsCard';
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
 const table = base('StaffScoreCard');
 let testValue
-
 
 const StatsPage = () => {
     const handleClick = async () => {
@@ -30,58 +29,64 @@ const StatsPage = () => {
     const statsArray = useSelector(selectStats);
     // const showName = stats.map(record => record.fields.Name)
     // const showKnowledge = stats.map(record => record.fields.Knowledge)
+    const mistyStats = useSelector(selectStatsByName("Misty"));
+    // console.log(mistyStats)
+    const attendanceStats = mistyStats.map(stat => stat.fields.attendance)
+    // console.log(attendanceStats)
+    const attendanceTotals = attendanceStats.reduce((partialSum, a) => partialSum + a, 0)
+    console.log(attendanceTotals)
 
-
-
-    
     return (
-        <>
-            <Container>
-                <SubHeader current='Stats' />
-                <Row className='row-content'>
-                    <Button onClick={handleClick}>Click</Button>
-                    <Col sm='6'>
-                        <h3>Stats</h3>
-                        {statsArray.map((stats, idx) =>
-                          <StatsCard key={idx} stats={stats} />)
-                        }
-                    </Col>
-                    <Col sm='6'>
-                        <Card>
-                            <CardHeader className='bg-primary text-white'>
-                            <h3>#1 Ranked Staff</h3>
-                            </CardHeader>
-                            <CardBody>
-                            <dl className='row'>
-                                <dt className='col-6'>Name</dt>
-                                <dd className='col-6'>Bobby</dd>
-                                <dt className='col-6'>Attendance</dt>
-                                <dd className='col-6'>10</dd>
-                                <dt className='col-6'>Knowledge</dt>
-                                <dd className='col-6'>9</dd>
-                                <dt className='col-6'>Teamwork</dt>
-                                <dd className='col-6'>10</dd>
-                            </dl>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card className='bg-light mt-3'>
-                            <CardBody>
-                                <blockquote className='blockquote'>
-                                <footer className='blockquote-footer'>
-                                    <cite title='Source Title'>
-                                    “If everyone is moving forward together, then success takes care of itself.”                                1903
-                                    </cite>
-                                </footer>
-                                </blockquote>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-
-            </Container>
-        </>
+        <Container>
+            <SubHeader current='Stats' />
+            <Row className='row-content'>
+                <Button onClick={handleClick}>Click</Button>
+                <Col sm='6'>
+                    <h3>Stats</h3>
+                    <p>{attendanceTotals}</p>
+                    {/* {statsArray.map((stats, idx) =>
+                      <StatsCard key={idx} stats={stats} />)
+                    } */}
+                    {
+                      mistyStats.map(stat => 
+                          <StatsCard stats={stat} />
+                        )
+                    }
+                </Col>
+                <Col sm='6'>
+                    <Card>
+                        <CardHeader className='bg-primary text-white'>
+                        <h3>#1 Ranked Staff</h3>
+                        </CardHeader>
+                        <CardBody>
+                        <dl className='row'>
+                            <dt className='col-6'>Name</dt>
+                            <dd className='col-6'>Bobby</dd>
+                            <dt className='col-6'>Attendance</dt>
+                            <dd className='col-6'>10</dd>
+                            <dt className='col-6'>Knowledge</dt>
+                            <dd className='col-6'>9</dd>
+                            <dt className='col-6'>Teamwork</dt>
+                            <dd className='col-6'>10</dd>
+                        </dl>
+                        </CardBody>
+                    </Card>
+                </Col>
+                <Col>
+                    <Card className='bg-light mt-3'>
+                        <CardBody>
+                            <blockquote className='blockquote'>
+                            <footer className='blockquote-footer'>
+                                <cite title='Source Title'>
+                                “If everyone is moving forward together, then success takes care of itself.”                                1903
+                                </cite>
+                            </footer>
+                            </blockquote>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

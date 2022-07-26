@@ -15,14 +15,9 @@ import StaffDetail from '../features/staff/StaffDetail';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
 
-
-// import DraftedTeamsList from '../app/teams/DratedTeamsList';
-
-
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
 const table = base('Teams');
-
 
 const StaffPage = () => {
     // const { staffId } = useParams();
@@ -30,7 +25,6 @@ const StaffPage = () => {
     const getStaff = useSelector(selectAllStaff);
     const isLoading = useSelector((state) => state.staff.isLoading);
     const errMsg = useSelector((state) => state.staff.errMsg);
-    // const { id, image, name, stats, featured } = getStaff;
 
     if (isLoading) {
         return (
@@ -47,8 +41,6 @@ const StaffPage = () => {
             </Row>
         );
     }
-
-
 
     return (
         <Container>

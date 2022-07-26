@@ -60,7 +60,7 @@ const statsSlice = createSlice({
             const newRecords = airTableRecords.map(record => record.fields)
             // state.id = newRecords
             // state.action.payload.fields.name = newArray;
-            console.log(newRecords)
+            // console.log(newRecords)
         },
         [fetchStatsByName.rejected]: (state, action) => {
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
@@ -72,5 +72,11 @@ export const statsReducer = statsSlice.reducer;
 
 export const selectStats = (state) => {
     return state.stats.statsArray;
+};
+
+export const selectStatsByName  = (name) => (state) => {
+    const stats = state.stats.statsArray.filter(stat => stat.fields.name === name)
+    // console.log(stats)
+    return stats
 };
 
