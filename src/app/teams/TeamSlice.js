@@ -1,6 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { baseUrl } from '../../app/shared/baseUrl';
-import { mapImageURL } from '../../utils/mapImageURL';
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
@@ -29,8 +27,6 @@ export const draftRecapList = createAsyncThunk(
               console.log(record.getId());
             });
           });
-        // const data = await response.json();
-        // console.log(records)
         return records;
     }
 );
@@ -54,16 +50,19 @@ export const draftTeam1AirTable = createAsyncThunk(
               console.log(record.getId());
             });
           });
-        // const data = await response.json();
-        // console.log(records)
-        // dispatch(fetchTeam1Air());
+        dispatch(fetchTeam1Air());
+        dispatch(fetchTeam1Air());
+        dispatch(fetchDraftRecap());
+        dispatch(fetchDraftRecap());
+        dispatch(fetchDraftRecap());
+        dispatch(setDraftRecap(parseInt(staffData.fields.id)));
         return records;
     }
 );
 
 export const draftTeam3AirTable = createAsyncThunk(
     'teams/draftTeam3AirTable',
-    async (staffData) => {
+    async (staffData, {dispatch}) => {
         const records = await team3draft.create([
             {
               "fields": {
@@ -80,15 +79,19 @@ export const draftTeam3AirTable = createAsyncThunk(
               console.log(record.getId());
             });
           });
-        // const data = await response.json();
-        // console.log(records)
+        dispatch(fetchTeam3Air());
+        dispatch(fetchTeam3Air());
+        dispatch(fetchDraftRecap());
+        dispatch(fetchDraftRecap());
+        dispatch(fetchDraftRecap());
+        dispatch(setDraftRecap(parseInt(staffData.fields.id)));
         return records;
     }
 );
 
 export const draftTeam2AirTable = createAsyncThunk(
     'teams/draftTeam2AirTable',
-    async (staffData) => {
+    async (staffData, {dispatch}) => {
         const records = await team2draft.create([
             {
               "fields": {
@@ -105,13 +108,15 @@ export const draftTeam2AirTable = createAsyncThunk(
               console.log(record.getId());
             });
           });
-        // const data = await response.json();
-        // console.log(records)
+        dispatch(fetchTeam2Air());
+        dispatch(fetchTeam2Air());
+        dispatch(fetchDraftRecap());
+        dispatch(fetchDraftRecap());
+        dispatch(fetchDraftRecap());
+        dispatch(setDraftRecap(parseInt(staffData.fields.id)));
         return records;
     }
 );
-
-
 
 export const undoDraftedTeams = createAsyncThunk(
     'teams/undoDraftedTeams',
@@ -123,11 +128,11 @@ export const undoDraftedTeams = createAsyncThunk(
             }
             console.log('Deleted', deletedRecords.length, 'records');
           });
-    //   dispatch(undoLastDraftedTeams(id));
+      dispatch(fetchDraftRecap());
+      dispatch(fetchDraftRecap());
       
   }
 );
-
 
 export const undoTeam1 = createAsyncThunk(
     'teams/undoTeam1',
@@ -174,24 +179,22 @@ export const undoTeam3 = createAsyncThunk(
   }
 );
 
-export const fetchDraftRecap= createAsyncThunk(
+export const fetchDraftRecap = createAsyncThunk(
     'staff/fetchDraftRecap',
     async () => {
         const records = await draftRecap.select({view: 'Grid view'}).firstPage()
-        // const data = await response.json();
-        // console.log(records)
-        return records;
+        const miniRecords = records.map(record => ({id: record.id, fields: record.fields}));
+        return miniRecords;
     }
 );
-
 
 export const fetchAirTableTeams = createAsyncThunk(
     'staff/fetchAirTableTeams',
     async () => {
         const records = await table.select({view: 'Grid view'}).firstPage()
-        // const data = await response.json();
-        // console.log(records)
-        return records;
+        const miniRecords = records.map(record => ({id: record.id, fields: record.fields}));
+        // dispatch(setAirTableTeams(miniRecords))
+        return miniRecords;
     }
 );
 
@@ -199,9 +202,9 @@ export const fetchTeam1Air = createAsyncThunk(
     'teams/fetchTeam1Air',
     async () => {
         const records = await team1draft.select({view: 'Grid view'}).firstPage()
-        // const data = await response.json();
-        // console.log(records)
-        return records;
+        const miniRecords = records.map(record => ({id: record.id, fields: record.fields}))
+        // dispatch(setDraftTeam1(miniRecords))
+        return miniRecords;
     }
 );
 
@@ -225,9 +228,6 @@ export const fetchTeam3Air = createAsyncThunk(
     }
 );
 
-
-
-
 const initialState = {
     teamsArray: [],
     draftTeam1Array: [],
@@ -237,6 +237,7 @@ const initialState = {
     loadingDraft: false,
     playerDrafted: false,
     draftedPlayers: [],
+    draftedIds: [],
     errMsg: ''
 };
 
@@ -250,44 +251,57 @@ const teamsSlice = createSlice({
         undoDraftTeam1: (state, action) => {
             state.draftTeam1Array = state.draftTeam1Array.filter(team => team.id != action.payload);
             state.playerDrafted = false;
-            // state.dratedPlayers = state.dratedPlayers.filter(team => team != parseInt(action.payload));
         },
         undoDraftTeam2: (state, action) => {
             state.draftTeam2Array = state.draftTeam2Array.filter(team => team.id != action.payload);
-            // state.dratedPlayers = state.dratedPlayers.filter(team => team != parseInt(action.payload));
         },
         undoDraftTeam3: (state, action) => {
             state.draftTeam3Array = state.draftTeam3Array.filter(team => team.id != action.payload);
-            // state.dratedPlayers = state.dratedPlayers.filter(team => team != parseInt(action.payload));
         },
         undoLastDraftedTeams: (state, action) => {
             state.dratedPlayers = state.dratedPlayers.filter(team => team != action.payload);
         },
         setDraftTeam1: (state, action,) => {
-            state.draftTeam1Array.push(action.payload)
-            state.dratedPlayers.push(action.payload.id)
-            // state.playerDrafted = true;
-            
+          const airTableRecords = action.payload
+          state.draftTeam1Array = airTableRecords.map(record => ({id: record.id, fields: record.fields}))   
         },
         setDraftTeam2: (state, action) => {
             state.draftTeam2Array.push(action.payload)
-            state.dratedPlayers.push(action.payload.id)
-            
+            state.dratedPlayers.push(action.payload.id)    
         },
         setDraftTeam3: (state, action) => {
             state.draftTeam3Array.push(action.payload)
-            state.dratedPlayers.push(action.payload.id)
-            
+            state.dratedPlayers.push(action.payload.id) 
         },
         setDraftPlayers: (state, action) => {
-            state.dratedPlayers.push(action.payload)
-            
+            state.dratedPlayers.push(action.payload)   
         },
+        setAirTableTeams: (state, action) => {
+          const airTableRecords = action.payload
+          state.teamsArray = airTableRecords.map(record => ({id: record.id, fields: record.fields}))
+        },
+        setDraftRecap: (state, action) => {
+          state.draftedIds.push(action.payload)
+        },
+        undoSetDraftRecap: (state, action) => {
+          state.draftedIds = state.draftedIds.filter(id => id != action.payload)
+        }
     },
-
-    
-
     extraReducers: {
+        [fetchDraftRecap.pending]: (state) => {
+          state.isLoading = true;
+        },
+        [fetchDraftRecap.fulfilled]: (state, action) => {
+          state.isLoading = false;
+          state.errMsg = '';
+          const airTableRecords = action.payload
+          const newArray = airTableRecords.map(record => ({id: record.id, fields: record.fields}))
+          state.draftedPlayers = newArray;
+        },
+        [fetchDraftRecap.rejected]: (state, action) => {
+          state.isLoading = false;
+          state.errMsg = action.error ? action.error.message : 'Fetch failed';
+        },
         [fetchDraftRecap.pending]: (state) => {
             state.isLoading = true;
         },
@@ -295,7 +309,7 @@ const teamsSlice = createSlice({
             state.isLoading = false;
             state.errMsg = '';
             const airTableRecords = action.payload
-            const newArray = airTableRecords.map(record => record.fields.id)
+            const newArray = airTableRecords.map(record => ({id: record.id, fields: record.fields}))
             state.draftedPlayers = newArray;
         },
         [fetchDraftRecap.rejected]: (state, action) => {
@@ -359,13 +373,11 @@ const teamsSlice = createSlice({
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
         },
         [draftTeam1AirTable.pending]: (state) => {
-            // state.loadingDraft= true;
+            state.loadingDraft= true;
         },
         [draftTeam1AirTable.fulfilled]: (state, action) => {
             state.loadingDraft = false;
             state.errMsg = '';
-            // state.teamsArray = mapImageURL(action.payload);
-            state.dratedPlayers.push(action.payload.id);
         },
         [draftTeam1AirTable.rejected]: (state, action) => {
             state.loadingDraft = false;
@@ -377,7 +389,6 @@ const teamsSlice = createSlice({
         [undoTeam1.fulfilled]: (state, action) => {
             state.loadingDraft = false;
             state.errMsg = '';
-            // state.teamsArray = mapImageURL(action.payload);
         },
         [undoTeam1.rejected]: (state, action) => {
             state.loadingDraft = false;
@@ -386,13 +397,7 @@ const teamsSlice = createSlice({
     }
 });
 
-
-
-
-
-export const {undoLastDraftedTeams, setDraftedPlayers, removeTeam, setDraftTeam1, setDraftTeam2, setDraftTeam3, undoDraftTeam1, undoDraftTeam2, undoDraftTeam3} = teamsSlice.actions;
-
-
+export const {undoSetDraftRecap, setDraftRecap, setAirTableTeams, undoLastDraftedTeams, setDraftedPlayers, removeTeam, setDraftTeam1, setDraftTeam2, setDraftTeam3, undoDraftTeam1, undoDraftTeam2, undoDraftTeam3} = teamsSlice.actions;
 export const teamsReducer = teamsSlice.reducer;
 
 export const selectAllTeams = (state) => {
@@ -403,10 +408,13 @@ export const selectAllDrafted = (state) => {
     return state.teams.draftedPlayers;
 };
 
+export const selectAllDraftedIds = (state) => {
+  return state.teams.draftedIds;
+};
+
 export const selectAllTeam1 = (state) => {
     return state.teams.draftTeam1Array;
 };
-
 
 export const selectAllTeam2 = (state) => {
     return state.teams.draftTeam2Array

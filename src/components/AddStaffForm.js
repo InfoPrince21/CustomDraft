@@ -12,6 +12,7 @@ import { postComment } from '../features/comments/commentsSlice';
 import { addStaff } from '../features/staff/staffSlice'
 import yup from "yup";
 import { baseUrl } from '../app/shared/baseUrl';
+import { addAirTableStaff } from '../features/staff/staffSlice';
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
@@ -26,45 +27,11 @@ const AddStaffForm = ( ) => {
     
     const dispatch = useDispatch();
 
-    const handleSubmit = async (values) => {
-        const createdRecord = await table.create([
-            {
-              "fields": {
-                "name": values.name,
-                "id": parseInt(nanoid()),
-                "image": [{
-                    "url": "https://dl.airtable.com/.attachmentThumbnails/f115340ec561085e4744c11dbd3e69e1/bc515143"
-                }],
-                "featured": "false",
-                "quote": "Draft Me!",
-                "featureInfo": "#1 Ranked Staff"
-              }
-            }
-          ], function(err, records) {
-            if (err) {
-              console.error(err);
-              return;
-            }
-            records.forEach(function (record) {
-              console.log(record.getId());
-            });
-          });
-
-        // const data = values.photo1
-
-        // fetch(baseUrl, {
-        //     method: "post",
-        //     headers: new Headers({ Accept: "application/json" }),
-        //     body: data,
-        // })
-        //     .them((response) => response.json())
-        //     .them((data) => console.log(data))
-        //     .catch((error) => console.log(error));
-        
-
+    const handleSubmit = (values) => {
+        dispatch(addAirTableStaff(values));
         console.log(values);
         setModalOpen(false)
-        // dispatch(addStaff(newStaff));
+        
     };
 
     return (

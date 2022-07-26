@@ -7,19 +7,13 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector, } from 'react-redux';
-import {fetchTeam1Air, fetchTeam2Air, fetchTeam3Air, draftRecapList, draftTeam1AirTable, draftTeam2AirTable, draftTeam3AirTable, draftedPlayersList, selectAllDrafted, selectAllTeam1, selectAllTeams, undoTeam1, draftTeam1, draftTeam2, draftTeam3, fetchTeam1, fetchTeam2, fetchTeam3} from '../../app/teams/TeamSlice';
+import {fetchTeam1Air, fetchTeam2Air, fetchTeam3Air, draftRecapList, draftTeam1AirTable, draftTeam2AirTable, draftTeam3AirTable, selectAllDraftedIds, } from '../../app/teams/TeamSlice';
 import { useEffect, useState, } from 'react';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
-import { findByLabelText } from '@testing-library/react';
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
-const team1draft = base('DraftTeam1');
-const team2draft = base('DraftTeam2');
-const team3draft = base('DraftTeam3');
-
-
 
 const StaffCard = ({staff, teamName, setTeamName,}, stop) => {  
     
@@ -33,30 +27,17 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     // const { id, image, name, stats, quote, featured } = staff;
     const isLoading = useSelector((state) => state.teams.loadingDraft)
     const errMsg = useSelector((state) => state.teams.errMsg);
-    // const [buttonDisplay, setButtonDisplay] = useState({display: "flex", gap: "4px"});
     const playerOnTeam = useSelector((state) => state.teams.playerDrafted)
-    const playersGone = useSelector(selectAllDrafted)
+    const playersGone = useSelector(selectAllDraftedIds)
     let buttonDisplay
     let showButton1
     let showButton2
     let showButton3
     let checkDisable = false
 
-    const draftedPlayersArray = []
-    const panelId = 'panel' + staff.fields.id
-    // playersGone.map(player => draftedPlayersArray.push(player.id))
-    
-    // if (playersGone.includes(id)) {
-    //     buttonDisplay = {display: "none"}
-    //     console.log("has id")
-    // } else {
-    //     buttonDisplay = {display: "flex", gap: "4px"}
-    // }
-
     if (playersGone.includes(staff.fields.id)) {
         buttonDisplay = {display: "none"}
         checkDisable = true
-        // console.log("has id")
     } else {
         buttonDisplay = {display: "flex", gap: "4px"}
         checkDisable = false
@@ -76,10 +57,6 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
         showButton3 = {display: "flex"}
     }
 
-
-
-    // console.log(playersGone)
-
     // const testData = dispatch(selectAllTeams);
     // const isLoading = useSelector((state) => state.team.loadingDraft);
     // const errMsg = useSelector((state) => state.team.errMsg);
@@ -92,17 +69,12 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
     };
 
     const handleTeam1 = () => {
-        // setButtonStyle({display: "none"})
         const staffData = staff 
-        
-        // setDrafted({display: "none"})
-
         setTeamName("Team 2")
         dispatch(draftRecapList(staffData));
         dispatch(draftTeam1AirTable(staffData));
         dispatch(fetchTeam1Air());
-        // return stop
-        
+        dispatch(fetchTeam1Air());
     }
 
     const handleTeam2 = () => {
@@ -111,6 +83,7 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
         dispatch(draftRecapList(staffData));
         dispatch(draftTeam2AirTable(staffData));
         dispatch(fetchTeam2Air());
+        dispatch(fetchTeam2Air());
     }
 
     const handleTeam3 = () => {
@@ -118,6 +91,7 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
         setTeamName("Team 1")
         dispatch(draftRecapList(staffData));
         dispatch(draftTeam3AirTable(staffData));
+        dispatch(fetchTeam3Air());
         dispatch(fetchTeam3Air());
     }
     return (
@@ -139,56 +113,36 @@ const StaffCard = ({staff, teamName, setTeamName,}, stop) => {
             <Typography style={buttonDisplay}>
                 {staff.fields.quote}
             </Typography>
-            <Row>
-            <Col 
-                id={staff.fields.id}
-                style={buttonDisplay}
-            >
-                <Button
-                    style={showButton1}
-                    onClick={handleTeam1} color="primary" size ="sm"
+                <Row>
+                <Col 
+                    id={staff.fields.id}
+                    style={buttonDisplay}
                 >
-                    Draft to Team 1
-                </Button>
-                <Button
-                    style={showButton2}
-                    onClick={handleTeam2} color="primary" size ="sm"
-                >
-                    Draft to Team 2
-                </Button>
-                <Button
-                    style={showButton3}
-                    onClick={handleTeam3} color="primary" size ="sm"
-                >   
-                    Draft to Team 3
-                </Button>
-            </Col>
-        </Row>
-        </AccordionDetails>
-            </Accordion>
-        {/* <Row>
-            <Col 
-                id={id}
-                style={buttonDisplay}
-            >
-                <Button
-                    onClick={handleTeam1} color="primary" size ="sm"
-                >
-                    Team 1 Draft
-                </Button>
-                <Button
-                onClick={handleTeam2} color="primary" size ="sm"
-                >
-                    Team 2 Draft
-                </Button>
-                <Button
-                onClick={handleTeam3} color="primary" size ="sm"
-                >   
-                    Team 3 Draft
-                </Button>
-            </Col>
-        </Row> */}
-        
+                    <Button
+                        style={showButton1}
+                        onClick={handleTeam1} 
+                        color="primary" size ="sm"
+                    >
+                        Team 1 Pick
+                    </Button>
+                    <Button
+                        style={showButton2}
+                        onClick={handleTeam2} 
+                        color="primary" size ="sm"
+                    >
+                        Team 2 Pick
+                    </Button>
+                    <Button
+                        style={showButton3}
+                        onClick={handleTeam3} 
+                        color="primary" size ="sm"
+                    >   
+                        Team 3 Pick
+                    </Button>
+                </Col>
+                </Row>
+            </AccordionDetails>
+        </Accordion>
         </>
     );
 }

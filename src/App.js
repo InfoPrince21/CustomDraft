@@ -16,6 +16,7 @@ import { fetchCampsites } from './features/campsites/campsitesSlice';
 import { fetchPartners } from './features/partners/partnersSlice';
 import { fetchPromotions } from './features/promotions/promotionsSlice';
 import { fetchComments } from './features/comments/commentsSlice';
+import { fetchStats } from './features/stats/statsSlice';
 import { fetchAirTableStaff, fetchStaff } from './features/staff/staffSlice';
 import { fetchDraftRecap, fetchTeams ,fetchTeam1Air,fetchTeam2Air,fetchTeam3Air, draftTeam1, draftTeam2, draftTeam3, fetchAirTableTeams } from './app/teams/TeamSlice';
 import { draftedTeams } from './app/teams/TeamSlice';
@@ -26,7 +27,7 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchTeam1Air());
+        dispatch(fetchStats());
         dispatch(fetchTeam2Air());
         dispatch(fetchTeam3Air());
         dispatch(fetchDraftRecap());

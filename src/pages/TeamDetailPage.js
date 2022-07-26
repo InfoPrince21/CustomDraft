@@ -11,7 +11,7 @@ import Loading from '../components/Loading';
 const TeamDetailPage = () => {
     const { teamId } = useParams();
     const team = useSelector(selectTeamById(teamId));
-    console.log('team:', team);
+    // console.log('team:', team);
 
     const isLoading = useSelector((state) => state.teams.isLoading);
     const errMsg = useSelector((state) => state.teams.errMsg);

@@ -1,20 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
+import DraftTeam1 from "../../app/teams/DraftTeam1";
+import DraftTeam2 from "../../app/teams/DraftTeam2";
+import DraftTeam3 from "../../app/teams/DraftTeam3";
+import DraftRecap from "../../app/teams/DraftRecap";
 import { useTimer } from 'react-timer-hook';
 import {useState} from 'react';
-import { Col, Row, Button } from 'reactstrap';
+import { Col, Row, } from 'reactstrap';
 import StaffCard from "./StaffCard";
 import { selectAllStaff} from './staffSlice';
-import { undoDraftedTeams, selectAllDrafted, selectAllTeam1, selectAllTeam2, selectAllTeam3, undoTeam1, undoTeam2, undoTeam3, draftTeam1, draftTeam2, draftTeam3, fetchTeam1, fetchTeam2, fetchTeam3} from '../../app/teams/TeamSlice';
+import { undoDraftedTeams, selectAllTeam1, undoTeam1, undoTeam2, undoTeam3 } from '../../app/teams/TeamSlice';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useEffect } from 'react';
-// import DraftedTeamsList from '../../app/teams/DratedTeamsList';
-// import DraftedTeamsList from '../../app/teams/DratedTeamsList';
 
 const StaffList = () => {
 
@@ -66,42 +62,7 @@ const StaffList = () => {
   };
   
   // const [buttonStyle, setButtonStyle] = useEffect({})   
-    const dispatch = useDispatch();
-    const teams = useSelector(selectAllTeam1);
-    const teams2 = useSelector(selectAllTeam2);
-    const teams3 = useSelector(selectAllTeam3);
-    const draftRecap = useSelector(selectAllDrafted);
-    
-    const handleUndo1 = (event) => {
-      const {id} = event.target
-      console.log(event.target)
-      dispatch(undoTeam1(id));
-      // setButtonStyle({})
-      // console.log(teams)
-    }
-
-    const handleUndo2 = (event) => {
-        const {id} = event.target
-        dispatch(undoTeam2(id));
-        // setButtonStyle({})
-        // console.log(teams)
-    }
-
-    const handleUndo3 = (event) => {
-        const {id} = event.target
-        dispatch(undoTeam3(id));
-        // setButtonStyle({})
-        // console.log(teams)
-    }
-
-    const handleUndoRecap = (event) => {
-      const {id} = event.target
-      dispatch(undoDraftedTeams(id));
-      // setButtonStyle({})
-      // console.log(teams)
-  }
-  
-    const staff = useSelector(selectAllStaff);
+    const staffAll = useSelector(selectAllStaff);
     const isLoading = useSelector((state) => state.staff.isLoading);
     const isDraftLoading = useSelector((state) => state.teams.loadingDraft)
     const errMsg = useSelector((state) => state.staff.errMsg);
@@ -126,7 +87,7 @@ const StaffList = () => {
           <Col sm="3">
             <h3>{teamName} <br/> is on the clock!</h3>
             <Timer />
-                  {staff.map((staff) => {
+                  {staffAll.map((staff, index) => {
                         return (
                             <>
                                 <StaffCard 
@@ -134,121 +95,20 @@ const StaffList = () => {
                                   isDraftLoading={isDraftLoading} 
                                   staff={staff}
                                   teamName={teamName}
-                                  key={staff.fields.id}
+                                  key={staff.id}
+                                  
                                 />
                           </>
                         );
                     })}
-            
           </Col>
-            {/* {staff.map((staff) => {
-                return (
-                    <>
-                    <Col md='5' className='m-4' key={staff.id}>
-                        <StaffCard isDraftLoading={isDraftLoading} staff={staff} />
-                    </Col>
-                    
-                  </>
-                );
-            })} */}
-                    <Col>
-                    <h5>Team 1 Roster</h5>
-                    {isDraftLoading ? <Loading /> : ""}
-                    {errMsg ? <Error errMsg={errMsg} />: ""}
-                    <ul>
-                      {teams.map((team) => {
-                          return (
-                            <>
-                            <li key={team.fields.id}>{team.fields.name}
-                            <Button
-                              id={team.id}
-                              onClick={handleUndo1}
-                              color="info"
-                              outline
-                              close
-                              size="sm"
-                              />
-                            </li>          
-                            </>
-                          );
-                      })}
-                      </ul>
-                      </Col>
-                      <Col>
-                    <h5>Team 2 Roster</h5>
-                    {isDraftLoading ? <Loading /> : ""}
-                    {errMsg ? <Error errMsg={errMsg} />: ""}
-                    <ul>
-                      {teams2.map((team) => {
-                          return (
-                            <>
-                            <li key={team.fields.id}>{team.fields.name}
-                            <Button
-                              id={team.id}
-                              onClick={handleUndo2}
-                              color="info"
-                              outline
-                              close
-                              size="sm"
-                              />
-                            </li>    
-                            </>
-                          );
-                      })}
-                      </ul>
-                      </Col>
-                      <Col>
-                    <h5>Team 3 Roster</h5>
-                    {isDraftLoading ? <Loading /> : ""}
-                    {errMsg ? <Error errMsg={errMsg} />: ""}
-                    <ul>
-                      {teams3.map((team) => {
-                          return (
-                            <>
-                            <li key={team.fields.id}>{team.fields.name}
-                            <Button
-                              id={team.id}
-                              onClick={handleUndo3}
-                              color="info"
-                              outline
-                              close
-                              size="sm"
-                              />
-                            </li>  
-                            </>
-                          );
-                      })}
-                      </ul>
-                      </Col>
-              <Row>
-                
-              
-              {/* <Col>
-                    <h1>Recap</h1>
-                    {isDraftLoading ? <Loading /> : ""}
-                    {errMsg ? <Error errMsg={errMsg} />: ""}
-                    <ul>
-                      {draftRecap.map((player) => {
-                          return (
-                            <>
-                            <li key={player.id}>{player.fields.name}
-                            <Button
-                              id={player.id}
-                              onClick={handleUndoRecap}
-                              color="info"
-                              outline
-                              close
-                              size="sm"
-                              />
-                            </li>
-                            </>
-                          );
-                      })}
-                    </ul>
-              </Col>  */}
-              </Row>
-            </Row>
-        {/* <DraftedTeamsList /> */}
+            <DraftTeam1 />
+            <DraftTeam2 />
+            <DraftTeam3 />
+          <Row>
+            <DraftRecap />
+          </Row>
+        </Row>
         </>
     );
 };
