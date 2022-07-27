@@ -31,12 +31,13 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(fetchAirTableStaff());
+        dispatch(fetchAirTableTeams());
         dispatch(fetchStats());
+        dispatch(fetchTeam1Air());
         dispatch(fetchTeam2Air());
         dispatch(fetchTeam3Air());
         dispatch(fetchDraftRecap());
-        dispatch(fetchAirTableStaff());
-        dispatch(fetchAirTableTeams());
      }, [dispatch]);
     
     return (

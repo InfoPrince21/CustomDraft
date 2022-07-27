@@ -56,8 +56,8 @@ const TeamDetail = () => {
             <Card>
                 <CardImg top src={team.fields.image[0].url} alt={team.fields.name} />
                 <CardBody>
-                    <CardText>Name: {team.fields.name} </CardText>
-                    <CardText>Team: {team.fields.name} </CardText>
+                    <CardText>{team.fields.name} </CardText>
+                    <CardText>Team Captain: {team.fields.captain} </CardText>
                     <CardText>Team Members:</CardText>
                     {teamPlayers}
                 </CardBody>

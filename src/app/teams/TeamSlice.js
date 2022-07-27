@@ -212,9 +212,10 @@ export const fetchTeam2Air = createAsyncThunk(
     'teams/fetchTeam2Air',
     async () => {
         const records = await team2draft.select({view: 'Grid view'}).firstPage()
+        const miniRecords = records.map(record => ({id: record.id, fields: record.fields}))
         // const data = await response.json();
         // console.log(records)
-        return records;
+        return miniRecords;
     }
 );
 
@@ -222,9 +223,10 @@ export const fetchTeam3Air = createAsyncThunk(
     'teams/fetchTeam3Air',
     async () => {
         const records = await team3draft.select({view: 'Grid view'}).firstPage()
+        const miniRecords = records.map(record => ({id: record.id, fields: record.fields}))
         // const data = await response.json();
         // console.log(records)
-        return records;
+        return miniRecords;
     }
 );
 

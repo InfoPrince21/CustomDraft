@@ -38,6 +38,9 @@ const StatsCard = ({stats}) => {
             </Typography>
             <br />
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              Total: {stats.fields.scoreTotal}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
               Attendance: {stats.fields.attendance}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">

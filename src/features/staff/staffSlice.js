@@ -72,7 +72,7 @@ export const addAirTableStaff = createAsyncThunk(
 
 const initialState = {
     staffArray: [],
-    isLoading: true,
+    isLoading: false,
     errMsg: ''
 };
 

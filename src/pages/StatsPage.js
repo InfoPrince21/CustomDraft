@@ -51,51 +51,7 @@ const StatsPage = () => {
                 </Col>
             </Row>
             <Row className='row-content'>
-                <Button onClick={handleClick}>Click</Button>
-                <Col sm='6'>
-                    <h3>Stats</h3>
-                    <p>{attendanceTotals}</p>
-                    {/* {statsArray.map((stats, idx) =>
-                      <StatsCard key={idx} stats={stats} />)
-                    } */}
-                    {
-                      mistyStats.map((stat, index) => 
-                          <StatsCard key={index} stats={stat} />
-                        )
-                    }
-                </Col>
-                <Col sm='6'>
-                    <Card>
-                        <CardHeader className='bg-primary text-white'>
-                        <h3>#1 Ranked Staff</h3>
-                        </CardHeader>
-                        <CardBody>
-                        <dl className='row'>
-                            <dt className='col-6'>Name</dt>
-                            <dd className='col-6'>Bobby</dd>
-                            <dt className='col-6'>Attendance</dt>
-                            <dd className='col-6'>10</dd>
-                            <dt className='col-6'>Knowledge</dt>
-                            <dd className='col-6'>9</dd>
-                            <dt className='col-6'>Teamwork</dt>
-                            <dd className='col-6'>10</dd>
-                        </dl>
-                        </CardBody>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card className='bg-light mt-3'>
-                        <CardBody>
-                            <blockquote className='blockquote'>
-                            <footer className='blockquote-footer'>
-                                <cite title='Source Title'>
-                                “If everyone is moving forward together, then success takes care of itself.”                                1903
-                                </cite>
-                            </footer>
-                            </blockquote>
-                        </CardBody>
-                    </Card>
-                </Col>
+                {/* <Button onClick={handleClick}>Click</Button> */}
             </Row>
         </Container>
     );

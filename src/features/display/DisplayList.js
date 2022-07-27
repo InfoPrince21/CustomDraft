@@ -12,68 +12,49 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 const DisplayList = () => {
     const items = useSelector((state) => [
-        // selectFeaturedStaff(state), 
+        selectFeaturedStaff(state), 
         // selectFeaturedTeam(state), 
     ]);
 
-    
-
     return (
-        <Row>
-            <Row>
-                <Col
-                sm={{
-                    offset: 2,
-                    size: 'auto'
-                }}
-                xl={{
-                    offset: 3,
-                    size: 'auto'
-                }}
-                >
-                
-                </Col>
-            </Row>
+        <>
+        <Row>            
             {items.map((item, idx) => {
-                const { featuredItem, isLoading, errMsg } = item;
-                // if (isLoading) {
-                //     return <Loading key={idx} />;
-                // }
-                // if (errMsg) {
-                //     return <Error errMsg={errMsg} key={idx} />;
-                // }
+                const { isLoading, errMsg } = item;
+                if (isLoading) {
+                    return <Loading />;
+                }
+                if (errMsg) {
+                    return <Error errMsg={errMsg} />;
+                }
+                const img = item.featuredItem.fields.image[0].url
                 return (
-                    
-                    
-                    (
                         // <Col md className='m-1' key={idx}>
                         //     <h1>{featuredItem.fields.featureInfo}</h1>
                         //     <h1>{featuredItem.fields.name}</h1>
                         //     {/* <AnimatedDisplayCard item={item} /> */}
                         // </Col>
-
-                        <ImageList sx={{ width: 400, height: 250 }}>
-                        <ImageListItem key={featuredItem.fields.id}>
+                        <Col key={idx}>
+                        <ImageList sx={{ width: 800, height: 500 }}>
+                        <ImageListItem>
                         <img
-                            src={`${featuredItem.fields.image[0].url}?w=248&fit=crop&auto=format`}
-                            srcSet={`${featuredItem.fields.image[0].url}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                            alt={featuredItem.fields.name}
+                            src={img}
+                            srcSet={img}
+                            // alt={item.featuredItem.fields.name}
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={featuredItem.fields.name}
-                            subtitle={<span>"{featuredItem.fields.featureInfo}"</span>}
+                            title={item.featuredItem.fields.name}
+                            subtitle={<span>"{item.featuredItem.fields.featureInfo}"</span>}
                             position="below"
                         />
                         </ImageListItem>
                         </ImageList>
-
-
-
-                    )
+                        </Col>
                 );
             })}
         </Row>
+        </>
     );
 };
 
