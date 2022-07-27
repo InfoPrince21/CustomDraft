@@ -28,7 +28,7 @@ const StaffDetail = ( {staff} ) => {
     const salesTotals = salesStats.reduce((partialSum, a) => partialSum + a, 0)
 
     const totalScore = () => {
-        const totals = parseInt(attendanceTotals) + parseInt(attendanceTotals) + parseInt(attendanceTotals)+ parseInt(attendanceTotals) + parseInt(attendanceTotals)
+        const totals = parseInt(attendanceTotals) + parseInt(knowledgeTotals) + parseInt(toolsStats)+ parseInt(teamworkTotals) + parseInt(salesTotals)
         return totals
     }
 

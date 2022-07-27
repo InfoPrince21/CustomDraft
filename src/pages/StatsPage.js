@@ -5,6 +5,7 @@ import PartnersList from '../features/partners/PartnersList';
 import { selectStats, selectStatsByName } from '../features/stats/statsSlice';
 import StatsCard from '../features/stats/StatsCard';
 import Board from '../components/Board';
+import TeamBoard from '../components/TeamBoard';
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
@@ -42,9 +43,12 @@ const StatsPage = () => {
         <Container>
             <SubHeader current='Stats' />
             <Row>
-                <div>
+                <Col>
+                    <TeamBoard></TeamBoard>
+                </Col>
+                <Col>
                     <Board></Board>
-                </div>
+                </Col>
             </Row>
             <Row className='row-content'>
                 <Button onClick={handleClick}>Click</Button>

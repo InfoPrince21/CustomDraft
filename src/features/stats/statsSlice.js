@@ -56,6 +56,8 @@ const initialState = {
     statsArray: [],
     playerTotalsArray: [],
     playerMappedArray: [],
+    teamTotalsArray: [],
+    teamMappedArray: [],
     isLoading: true,
     errMsg: ''
 };
@@ -82,9 +84,7 @@ const statsSlice = createSlice({
                 ({
                     name: record.fields.name,
                     score: record.fields.scoreTotal,
-                    location: record.fields.teamId,
-                    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-                    dt: record.fields.date
+                    team: record.fields.teamName
                 }))
             const details = state.playerTotalsArray
             const output = Object.values(details.reduce((value, object) => {
@@ -96,7 +96,22 @@ const statsSlice = createSlice({
                 return value;
              }, {}));
             state.playerMappedArray = output
-
+            state.teamTotalsArray = state.statsArray.map(record => 
+                ({
+                    team: record.fields.teamName,
+                    score: record.fields.scoreTotal,
+                }))
+                
+            const teamDetails = state.teamTotalsArray
+            const teamOutput = Object.values(teamDetails.reduce((value, object) => {
+                if (value[object.team]) {
+                   ['score'].forEach(key => value[object.team][key] = value[object.team][key] + object[key]);
+                   } else {
+                      value[object.team] = { ...object };
+                }
+                return value;
+             }, {}));
+            state.teamMappedArray = teamOutput
         },
         [fetchStats.rejected]: (state, action) => {
             state.errMsg = action.error ? action.error.message : 'Fetch failed';
@@ -129,6 +144,10 @@ export const selectStats = (state) => {
 
 export const getScoreBoardStats = (state) => {
     return state.stats.playerMappedArray;
+};
+
+export const getTeamScoreBoardStats = (state) => {
+    return state.stats.teamMappedArray;
 };
 
 export const selectStatsByName  = (name) => (state) => {

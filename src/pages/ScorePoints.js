@@ -13,7 +13,7 @@ const ScorePoints = () => {
             <Row className='row-content align-items-center'>
 
                 <Col sm='6'>
-                <iframe src="https://airtable.com/embed/shrBKhKMVK7fIMXJV?backgroundColor=red" width="100%" height="1900" frameborder="0"></iframe>
+                <iframe src="https://airtable.com/embed/shrBKhKMVK7fIMXJV?backgroundColor=red" width="100%" height="2000" frameborder="0"></iframe>
                 </Col>
                 <Col>
     

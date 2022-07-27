@@ -1,13 +1,13 @@
-import Profiles from "./Profiles";
+import TeamProfiles from "./TeamProfiles";
 import { useState } from 'react'
 import { useSelector} from 'react-redux';
 
 // import {Leaderboard} from './ScoreDb';
-import {getScoreBoardStats} from '../features/stats/statsSlice'
+import {getTeamScoreBoardStats} from '../features/stats/statsSlice'
 
-function Board() {
+function TeamBoard() {
   
-  const Leaderboard = useSelector(getScoreBoardStats)
+  const Leaderboard = useSelector(getTeamScoreBoardStats)
 
   const [filterScores, setFilterScores] = useState(0)
 
@@ -37,20 +37,17 @@ function Board() {
     return (
     <>
     <div className="board">
-      <h1 className="leaderboard">Leaders</h1>
+      <h1 className="leaderboard">Team Standings</h1>
   
       <div className="duration">
-        <button onClick={handleClick} data-id="0">All Players</button>
-        <button onClick={handleClick} data-id="Cowboys">Cowboys</button>
-        <button onClick={handleClick} data-id="Bucs">Bucs</button>
-        <button onClick={handleClick} data-id="A's">A's</button>
+        <button onClick={handleClick} data-id="0">All Teams</button>
       </div>
     
-      <Profiles Leaderboard={between(Leaderboard, filterScores)}></Profiles>
+      <TeamProfiles Leaderboard={between(Leaderboard, filterScores)}></TeamProfiles>
 
     </div>
     </>
   )
 }
 
-export default Board;
+export default TeamBoard;

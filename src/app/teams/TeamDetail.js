@@ -38,18 +38,9 @@ const TeamDetail = () => {
     const salesTotals = salesStats.reduce((partialSum, a) => partialSum + a, 0)
 
     const totalScore = () => {
-        const totals = parseInt(attendanceTotals) + parseInt(attendanceTotals) + parseInt(attendanceTotals)+ parseInt(attendanceTotals) + parseInt(attendanceTotals)
+        const totals = parseInt(attendanceTotals) + parseInt(knowledgeTotals) + parseInt(teamworkTotals)+ parseInt(toolsTotals) + parseInt(salesTotals)
         return totals
     }
-
-    const totalScoreCard = {
-        name: teamId,
-        location: teamId,
-        score: totalScore(),
-        img: "https://dl.airtable.com/.attachmentThumbnails/b9fe548231f5a31dccfeeaf9babe59ad/c6b4932b",
-        dt: "2002-07-10"
-    }
-
 
 
     if (team.fields.id === 111) {

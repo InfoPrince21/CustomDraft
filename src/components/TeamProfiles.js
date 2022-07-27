@@ -1,5 +1,5 @@
 
-const Profiles = ({Leaderboard}) => {
+const TeamProfiles = ({Leaderboard}) => {
 
     return (
     <>
@@ -13,7 +13,7 @@ const Profiles = ({Leaderboard}) => {
                         {/* <img src={value.img} alt="" /> */}
                         <div className="info">
                             <h3 className="name text-dark">{value.name}</h3>
-                            <span>{value.team}</span>
+                            <h3>{value.team}</h3>
                         </div>
                     </div>
                     <div className="item">
@@ -28,4 +28,4 @@ const Profiles = ({Leaderboard}) => {
   )
 };
 
-export default Profiles;
+export default TeamProfiles;
