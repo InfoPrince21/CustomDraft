@@ -48,7 +48,7 @@ const Header = () => {
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className='nav-link' to='/contact'>
+                        <NavLink className='nav-link' to='/score'>
                             <i className='fa fa-check-circle-o' /> Score Points
                         </NavLink>
                     </NavItem>

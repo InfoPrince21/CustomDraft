@@ -9,24 +9,18 @@ const ScorePoints = () => {
     
     return (
         <Container>
-            
             <SubHeader current={"Score Points"}/>
             <Row className='row-content align-items-center'>
-                <Col sm='4'>
-                    <h5>Enter Scores Here</h5>
+
+                <Col sm='6'>
+                <iframe src="https://airtable.com/embed/shrBKhKMVK7fIMXJV?backgroundColor=red" width="100%" height="1900" frameborder="0"></iframe>
                 </Col>
                 <Col>
     
                 </Col>
             </Row>
             <Row className='row-content'>
-                <Col xs='12'>
-                    {/* <h2>Send Us Your Feedback</h2> */}
-                    <hr />
-                </Col>
-                <Col md='10'>
-                    {/* <ContactForm /> */}
-                </Col>
+
             </Row>
         </Container>
     );

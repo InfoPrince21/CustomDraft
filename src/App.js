@@ -5,6 +5,7 @@ import ContactPage from './pages/ScorePoints';
 import HomePage from './pages/HomePage';
 import StatsPage from './pages/StatsPage';
 import StaffPage from './pages/StaffPage';
+import ScorePoints from './pages/ScorePoints';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CampsitesDirectoryPage from './pages/CampsitesDirectoryPage';
@@ -22,6 +23,9 @@ import { fetchDraftRecap, fetchTeams ,fetchTeam1Air,fetchTeam2Air,fetchTeam3Air,
 import { draftedTeams } from './app/teams/TeamSlice';
 import DratedTeams from './app/teams/DratedTeamsList';
 import './App.css';
+import './components/style.css'
+
+
 
 function App() {
     const dispatch = useDispatch();
@@ -43,6 +47,7 @@ function App() {
                 <Route path='draft' element={<DraftPage />} />
                 <Route path='staff' element={<StaffPage />} />
                 <Route path='teams' element={<TeamDirectoryPage />} />
+                <Route path='score' element={<ScorePoints />} />
                 {/* <Route
                     path='draft/:staffId'
                     element={<StaffDetailPage />}

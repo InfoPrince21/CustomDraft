@@ -36,9 +36,7 @@ const TeamList = () => {
                         <TeamCard team={team} />
                     </Col>
                 );
-            })}
-            <AddTeamForm />
-            
+            })}           
         </Row>
     );
 };

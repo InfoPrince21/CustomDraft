@@ -1,17 +1,17 @@
 import { Card, CardImg, CardText, CardBody, Col, Row } from 'reactstrap';
 import StatsCard from '../stats/StatsCard';
 import { selectStats, selectStatsByName } from '../stats/statsSlice';
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from 'react-redux';
+import AddStatsForm from '../../components/AddStatsForm';
+
 
 const StaffDetail = ( {staff} ) => {
 
-    const dispatch = useDispatch();
     const { fields } = staff;
     const getStats = useSelector(selectStats);
     const staffStats = getStats.filter(stat => stat.fields.name === fields.name)
     const playerStats = useSelector(selectStatsByName(fields.name));
-    
+
     const attendanceStats = playerStats.map(stat => stat.fields.attendance)
     const attendanceTotals = attendanceStats.reduce((partialSum, a) => partialSum + a, 0)
 
@@ -27,10 +27,20 @@ const StaffDetail = ( {staff} ) => {
     const salesStats= playerStats.map(stat => stat.fields.sales)
     const salesTotals = salesStats.reduce((partialSum, a) => partialSum + a, 0)
 
-    // console.log(staffStats);
+    const totalScore = () => {
+        const totals = parseInt(attendanceTotals) + parseInt(attendanceTotals) + parseInt(attendanceTotals)+ parseInt(attendanceTotals) + parseInt(attendanceTotals)
+        return totals
+    }
 
+    // const staffScoreRecord = {
+    //     name: fields.name,
+    //     team: 
+    //     score:
+    // }
 
     return (
+        <>
+        {/* <AddStatsForm staff={staff} /> */}
         <Row>
         <Col>
             <Card>
@@ -45,7 +55,7 @@ const StaffDetail = ( {staff} ) => {
             </Card>
         </Col>
         <Col md='5' className='m-1 ms-auto'>
-        <h5>Stats Totals</h5>
+        <h3>Total Score: {totalScore()}</h3>
         <p>Attendance Score: {attendanceTotals} </p>
         <p>Knowledge Score: {knowledgeTotals} </p>
         <p>Teamwork Score: {teamworkTotals} </p>
@@ -56,10 +66,11 @@ const StaffDetail = ( {staff} ) => {
         <Col>
         <h5>Stats Recap</h5>
         {staffStats.map(stat => 
-                        <StatsCard stats={stat} />)
-                    }
+            <StatsCard stats={stat} />
+        )}
         </Col>
         </Row>
+        </>
     );
 };
 

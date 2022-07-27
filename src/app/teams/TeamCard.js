@@ -42,9 +42,9 @@ const TeamCard = ({team}, {teamPlayers}) => {
             </Card>
 
             <CardActions>
-                <Button onClick={handleSubmit} size="small" color="primary">
+                {/* <Button onClick={handleSubmit} size="small" color="primary">
                     Delete
-                </Button>
+                </Button> */}
             </CardActions>
         <Row>
             {/* <Col style={{

@@ -4,6 +4,7 @@ import SubHeader from '../components/SubHeader';
 import PartnersList from '../features/partners/PartnersList';
 import { selectStats, selectStatsByName } from '../features/stats/statsSlice';
 import StatsCard from '../features/stats/StatsCard';
+import Board from '../components/Board';
 
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
@@ -11,6 +12,7 @@ const table = base('StaffScoreCard');
 let testValue
 
 const StatsPage = () => {
+
     const handleClick = async () => {
         
         // const records = await table.select().firstPage()
@@ -22,7 +24,7 @@ const StatsPage = () => {
         // const recordFields= records.map(record => record.fields.image[0].url)
         // const recordFields= records.find(record => record.fields.featured === "true")
         // console.log(recordFields)
-        console.log(miniRecord)
+        // console.log(miniRecord)
         return testValue = miniRecord
     }
     
@@ -34,11 +36,16 @@ const StatsPage = () => {
     const attendanceStats = mistyStats.map(stat => stat.fields.attendance)
     // console.log(attendanceStats)
     const attendanceTotals = attendanceStats.reduce((partialSum, a) => partialSum + a, 0)
-    console.log(attendanceTotals)
+    // console.log(attendanceTotals)
 
     return (
         <Container>
             <SubHeader current='Stats' />
+            <Row>
+                <div>
+                    <Board></Board>
+                </div>
+            </Row>
             <Row className='row-content'>
                 <Button onClick={handleClick}>Click</Button>
                 <Col sm='6'>
@@ -48,8 +55,8 @@ const StatsPage = () => {
                       <StatsCard key={idx} stats={stats} />)
                     } */}
                     {
-                      mistyStats.map(stat => 
-                          <StatsCard stats={stat} />
+                      mistyStats.map((stat, index) => 
+                          <StatsCard key={index} stats={stat} />
                         )
                     }
                 </Col>
