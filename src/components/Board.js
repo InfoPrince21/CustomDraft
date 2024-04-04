@@ -2,7 +2,6 @@ import Profiles from "./Profiles";
 import { useState } from 'react'
 import { useSelector} from 'react-redux';
 
-// import {Leaderboard} from './ScoreDb';
 import {getScoreBoardStats} from '../features/stats/statsSlice'
 
 function Board() {
@@ -19,16 +18,14 @@ function Board() {
       return Leaderboard
     }
 
-    // sort with asending order
     return filter.sort((a, b) => {
-        if ( a.score === b.score){
-            return b.score - a.score;
-        } else{
-            return b.score - a.score;
-        }
-    })
-
-}
+          if ( a.score === b.score){
+              return b.score - a.score;
+          } else{
+              return b.score - a.score;
+          }
+      })
+    }
 
   const handleClick = (e) => {
     setFilterScores(e.target.dataset.id)
@@ -45,9 +42,7 @@ function Board() {
         <button onClick={handleClick} data-id="Bucs">Bucs</button>
         <button onClick={handleClick} data-id="A's">A's</button>
       </div>
-    
       <Profiles Leaderboard={between(Leaderboard, filterScores)}></Profiles>
-
     </div>
     </>
   )

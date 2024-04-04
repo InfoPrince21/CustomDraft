@@ -12,7 +12,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 const DisplayList = () => {
     const items = useSelector((state) => [
-        selectFeaturedStaff(state), 
+        // selectFeaturedStaff(state), 
         // selectFeaturedTeam(state), 
     ]);
 

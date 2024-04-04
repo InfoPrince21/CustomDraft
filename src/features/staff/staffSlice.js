@@ -6,7 +6,10 @@ import { nanoid } from '@reduxjs/toolkit';
 import { customAlphabet } from 'nanoid';
 
 var Airtable = require('airtable');
-var base = new Airtable({apiKey: 'key7CvA4nWviUYLcP'}).base('appmqv083cLppisF5');
+var base = new Airtable({
+  apiKey:
+    "pat4nh10f6PT2EoBm.8143dc2e79fe8b5a64a333ad1961c59cbddc50dd7937841959c15aba85b3bd26",
+}).base("appmqv083cLppisF5");
 const table = base('Staff');
 
 
